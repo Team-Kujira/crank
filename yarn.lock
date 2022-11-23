@@ -987,9 +987,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "kujia-bow-crank@workspace:."
   dependencies:
+    "@cosmjs/crypto": ^0.29.4
     "@cosmjs/proto-signing": ^0.29.4
     "@cosmjs/utils": ^0.29.4
     "@types/node": ^18.11.9
+    cosmjs-types: ^0.5.2
     kujira.js: "Team-Kujira/kujira.js#b6453bb9bb997a59b43cf35d6f39262b081f7151"
     protobufjs: ^7.1.2
     ts-node: ^10.9.1
