@@ -1,8 +1,31 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
+import { GAS_PRICE } from "./config.js";
 import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js";
 import { msg } from "kujira.js";
 import { querier } from "./query.js";
-import { Client, client } from "./wallet.js";
+import { calculateFee, Client, client, signAndBroadcast } from "./wallet.js";
+
+const grantMsg = (granter: Client, grantee: Client) => [
+  msg.feegrant.msgGrantAllowance({
+    granter: granter[1],
+    grantee: grantee[1],
+    allowance: {
+      typeUrl: "/cosmos.feegrant.v1beta1.BasicAllowance",
+      value: BasicAllowance.encode({
+        spendLimit: [],
+      }).finish(),
+    },
+  }),
+];
+
+const runMsg = (sender: Client, contract: string) => [
+  msg.wasm.msgExecuteContract({
+    sender: sender[1],
+    contract,
+    msg: Buffer.from(JSON.stringify({ run: {} })),
+    funds: [],
+  }),
+];
 
 export const setup = async (
   contract: string,
@@ -15,21 +38,9 @@ export const setup = async (
     console.info(`[SETUP:${contract}] feegrant exists`);
   } catch (error) {
     console.info(`[SETUP:${contract}] creating feegrant`);
-    const msgs = [
-      msg.feegrant.msgGrantAllowance({
-        granter: orchestrator[1],
-        grantee: w[1],
-        allowance: {
-          typeUrl: "/cosmos.feegrant.v1beta1.BasicAllowance",
-          value: BasicAllowance.encode({
-            spendLimit: [],
-          }).finish(),
-        },
-      }),
-    ];
     const res = await orchestrator[0].signAndBroadcast(
       orchestrator[1],
-      msgs,
+      grantMsg(orchestrator, w),
       "auto"
     );
     assertIsDeliverTxSuccess(res);
@@ -42,7 +53,27 @@ export const run = async (
   idx: number,
   orchestrator: Client
 ): Promise<void> => {
-  const w = await client(idx);
-  console.info(`[RUNNER:${contract}] Running with ${w[1]}`);
-  run(contract, idx, orchestrator);
+  try {
+    const w = await client(idx);
+    const { orders }: { orders: { filled_amount: string }[] } =
+      await querier.wasm.queryContractSmart(contract, { orders: {} });
+    const shouldRun = orders.find((o) => o.filled_amount !== "0");
+    if (shouldRun) {
+      console.info(`[RUNNER:${contract}] running with ${w[1]}`);
+      const res = await signAndBroadcast(w, orchestrator, runMsg(w, contract));
+      assertIsDeliverTxSuccess(res);
+      console.info(`[RUNNER:${contract}] done ${res.transactionHash}`);
+    } else {
+      console.debug(`[RUNNER:${contract}] skipping with ${w[1]}`);
+    }
+  } catch (error: any) {
+    console.debug(`[RUNNER:${contract}] error ${error.message}`);
+  } finally {
+    await new Promise<void>((r) =>
+      setTimeout(() => {
+        r();
+      }, 2500)
+    );
+    run(contract, idx, orchestrator);
+  }
 };
