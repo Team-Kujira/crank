@@ -1,8 +1,10 @@
-import { CONTRACTS } from "./config.js";
-import { run, setup } from "./worker.js";
-import { client } from "./wallet.js";
-import { querier } from "./query.js";
 import { accountFromAny } from "@cosmjs/stargate";
+import { Protocol } from "./config.js";
+import { querier } from "./query.js";
+import { client } from "./wallet.js";
+import * as bow from "./workers/bow.js";
+import { setup } from "./workers/index.js";
+import * as usk from "./workers/usk.js";
 
 (async function () {
   const orchestrator = await client(0);
@@ -15,15 +17,27 @@ import { accountFromAny } from "@cosmjs/stargate";
     process.exit();
   }
 
-  await CONTRACTS.reduce((agg, c: string, idx: number) => {
-    return agg
-      ? agg.then(() => setup(c, idx + 1, orchestrator))
-      : setup(c, idx + 1, orchestrator);
-  }, null as null | Promise<void>);
+  await [...bow.contracts, ...usk.contracts].reduce(
+    (agg, c: { address: string }, idx: number) => {
+      return agg
+        ? agg.then(() => setup(c.address, idx + 1, orchestrator))
+        : setup(c.address, idx + 1, orchestrator);
+    },
+    null as null | Promise<void>
+  );
 
   await Promise.all(
-    CONTRACTS.map(async (c: string, idx: number) =>
-      run(c, idx + 1, orchestrator)
+    [...bow.contracts, ...usk.contracts].map(
+      async (c: { address: string; protocol: Protocol }, idx: number) => {
+        switch (c.protocol) {
+          case Protocol.BOW:
+            return bow.run(c.address, idx + 1, orchestrator);
+          case Protocol.USK:
+            const config = usk.markets.find((x) => x.address === c.address);
+            if (!config) throw new Error(`${c.address} market not found`);
+            return usk.run(config, idx + 1, orchestrator);
+        }
+      }
     )
   );
 })();

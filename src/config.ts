@@ -1,12 +1,12 @@
-import { PAIRS, MAINNET, TESTNET } from "kujira.js";
 import { GasPrice } from "@cosmjs/stargate";
+import { MAINNET, TESTNET } from "kujira.js";
 
 export const NETWORK = process.env.NETWORK === "mainnet" ? MAINNET : TESTNET;
 
-export const CONTRACTS: string[] = PAIRS.reduce(
-  (a, p) => (p.chainID === NETWORK && p.pool ? [p.pool, ...a] : a),
-  [] as string[]
-);
+export enum Protocol {
+  USK = "usk",
+  BOW = "bow",
+}
 
 const RPC_DEFAULT =
   process.env.NETWORK === "mainnet"
