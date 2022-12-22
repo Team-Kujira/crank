@@ -17,6 +17,7 @@ const MARKET_MAX_LTV = 0.6;
 const DD: Record<string, number> = {
   kujira1eydneup86kyhew5zqt5r7tkxefr3w5qcsn3ssrpcw9hm4npt3wmqa7as3u: 4,
   kujira1fjews4jcm2yx7una77ds7jjjzlx5vgsessguve8jd8v5rc4cgw9s8rlff8: 12,
+  kujira1f2jt3f9gzajp5uupeq6xm20h90uzy6l8klvrx52ujaznc8xu8d7s6av27t: 12,
 };
 
 type Position = {
@@ -95,14 +96,17 @@ const getpositions = async (
 ): Promise<Position[]> => {
   console.debug(`[USK:${address}] Running ${new Date()}`);
 
-  let candidates: Position[] = [];
+  let candidates: Position[] = [
+    // @ts-expect-error
+    { owner: "kujira1ltvwg69sw3c5z99c6rr08hal7v0kdzfxz07yj5" },
+  ];
 
   try {
     const { models } = await querier.wasm.getAllContractState(
       address,
       PageRequest.encode({
         key: new Uint8Array(),
-        limit: Long.fromNumber(10000),
+        limit: Long.fromNumber(1000000),
         reverse: true,
         offset: Long.fromNumber(0),
         countTotal: false,
@@ -125,6 +129,11 @@ const getpositions = async (
         const factor = 10 ** (DD[address] || 0);
         const liqiuidation_price =
           debt_amount / (deposit_amount * MARKET_MAX_LTV);
+
+        if (p.owner == "kujira1ltvwg69sw3c5z99c6rr08hal7v0kdzfxz07yj5") {
+          console.log(p);
+        }
+
         if (liqiuidation_price * factor > price) {
           candidates.push(p);
         }

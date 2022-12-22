@@ -11,8 +11,24 @@ export const setup = async (
 ): Promise<void> => {
   const w = await client(idx);
   try {
-    await querier.feegrant.allowance(orchestrator[1], w[1]);
+    const grant = await querier.feegrant.allowance(orchestrator[1], w[1]);
     console.info(`[SETUP:${contract}] feegrant exists`);
+    if (grant.allowance?.granter !== orchestrator[1]) {
+      console.info(`[SETUP:${contract}] grant incorrect, recreating`);
+      let res = await orchestrator[0].signAndBroadcast(
+        orchestrator[1],
+        revokeMsg(orchestrator, w),
+        "auto"
+      );
+      console.info(`[SETUP:${contract}] revoked ${res.transactionHash}`);
+
+      res = await orchestrator[0].signAndBroadcast(
+        orchestrator[1],
+        grantMsg(orchestrator, w),
+        "auto"
+      );
+      console.info(`[SETUP:${contract}] granted ${res.transactionHash}`);
+    }
   } catch (error) {
     console.info(`[SETUP:${contract}] creating feegrant`);
     const res = await orchestrator[0].signAndBroadcast(
@@ -35,5 +51,12 @@ const grantMsg = (granter: Client, grantee: Client) => [
         spendLimit: [],
       }).finish(),
     },
+  }),
+];
+
+const revokeMsg = (granter: Client, grantee: Client) => [
+  msg.feegrant.msgRevokeAllowance({
+    granter: granter[1],
+    grantee: grantee[1],
   }),
 ];
