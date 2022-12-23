@@ -1,7 +1,13 @@
-# Kujira BOW Crank
+# Kujira Crank
 
-The BOW market making protocol on Kujira requires the individual contracts to be "cranked", to adjust their orders in response to some of them being filled.
+This crank app uses a single "orchestrator" account, and sets up feegrants to allow concurrent cranking of the BOW Contracts and USK Liqudiations.
 
 Long-term this will be replaced by the on-chain scheduler. Until then, this app allows us to understand the dynamics of these crankers before committing to the scheduler.
 
 ## Setup
+
+1. Ensure that you have `MNEMONIC` available on your env for the orchestrator account
+1. `yarn`
+1. `NETWORK=mainnet yarn start`
+
+NB: On first start, all the feegrants will be created which can take some time
