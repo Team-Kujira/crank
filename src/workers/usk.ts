@@ -96,10 +96,7 @@ const getpositions = async (
 ): Promise<Position[]> => {
   console.debug(`[USK:${address}] Running ${new Date()}`);
 
-  let candidates: Position[] = [
-    // @ts-expect-error
-    { owner: "kujira1ltvwg69sw3c5z99c6rr08hal7v0kdzfxz07yj5" },
-  ];
+  let candidates: Position[] = [];
 
   try {
     const { models } = await querier.wasm.getAllContractState(
@@ -129,10 +126,6 @@ const getpositions = async (
         const factor = 10 ** (DD[address] || 0);
         const liqiuidation_price =
           debt_amount / (deposit_amount * MARKET_MAX_LTV);
-
-        if (p.owner == "kujira1ltvwg69sw3c5z99c6rr08hal7v0kdzfxz07yj5") {
-          console.log(p);
-        }
 
         if (liqiuidation_price * factor > price) {
           candidates.push(p);
