@@ -10,7 +10,7 @@
     "@cosmjs/utils": "^0.29.4",
     "@types/node": "^18.11.9",
     "cosmjs-types": "^0.5.2",
-    "kujira.js": "Team-Kujira/kujira.js#c901c737a2f3a288a45d5997d0a9d91da9fa4fd3",
+    "kujira.js": "Team-Kujira/kujira.js#501d967637a1a42823f2ac138c2220fee6271138",
     "protobufjs": "^7.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.3"
