@@ -34,9 +34,10 @@ type Position = {
   liquidation_price_cache: string;
 };
 
-const leverage: Market[] = PAIRS.filter((p) => p.chainID === NETWORK)
-  .map((p) => p.margin?.market)
-  .filter((x) => !!x) as Market[];
+const leverage = PAIRS.filter((p) => p.chainID === NETWORK).reduce(
+  (a, p) => (p.margin ? [...a, p.margin.config] : a),
+  [] as Market[]
+);
 
 export const markets = [
   ...Object.values(NETWORK === MAINNET ? MARKETS_KAIYO : MARKETS_HARPOON),
