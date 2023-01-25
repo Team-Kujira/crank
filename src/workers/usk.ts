@@ -150,6 +150,12 @@ const getpositions = async (
 };
 
 export async function run(market: Market, idx: number, orchestrator: Client) {
+  appsignal.send(
+    appsignal.createSpan((s) =>
+      s.setNamespace("background").setAction(`USK#${market}`).setParams({ idx })
+    )
+  );
+
   try {
     const w = await client(idx);
     console.info(`[USK:${market.address}] running with ${w[1]}`);

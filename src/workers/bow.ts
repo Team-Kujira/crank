@@ -27,6 +27,14 @@ export const run = async (
   idx: number,
   orchestrator: Client
 ): Promise<void> => {
+  appsignal.send(
+    appsignal.createSpan((s) =>
+      s
+        .setNamespace("background")
+        .setAction(`BOW#${contract}`)
+        .setParams({ idx })
+    )
+  );
   try {
     const w = await client(idx);
     const { orders }: { orders: { filled_amount: string }[] } =
