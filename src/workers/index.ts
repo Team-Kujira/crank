@@ -1,4 +1,5 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
+import { appsignal } from "appsignal.js";
 import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js";
 import { msg } from "kujira.js";
 import { querier } from "../query.js";
@@ -29,7 +30,9 @@ export const setup = async (
       );
       console.info(`[SETUP:${contract}] granted ${res.transactionHash}`);
     }
-  } catch (error) {
+  } catch (error: any) {
+    appsignal.sendError(error);
+
     console.info(`[SETUP:${contract}] creating feegrant`);
     const res = await orchestrator[0].signAndBroadcast(
       orchestrator[1],

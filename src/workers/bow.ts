@@ -1,4 +1,5 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
+import { appsignal } from "appsignal.js";
 import { msg, PAIRS } from "kujira.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
@@ -40,6 +41,8 @@ export const run = async (
       console.debug(`[BOW:${contract}] skipping with ${w[1]}`);
     }
   } catch (error: any) {
+    appsignal.sendError(error);
+
     console.debug(`[BOW:${contract}] error ${error.message}`);
   } finally {
     await new Promise<void>((r) =>

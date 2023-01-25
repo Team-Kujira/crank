@@ -1,3 +1,4 @@
+import { appsignal } from "appsignal.js";
 import { PageRequest } from "cosmjs-types/cosmos/base/query/v1beta1/pagination.js";
 import {
   MAINNET,
@@ -88,7 +89,9 @@ const liquidate = async (
 
     const res = await signAndBroadcast(client, orchestrator, msgs, "auto");
     console.debug(`[USK:${contract}] ${res.transactionHash}`);
-  } catch (e) {
+  } catch (e: any) {
+    appsignal.sendError(e);
+
     console.error(`[USK:${contract}] ${e}`);
 
     positions.pop();
@@ -138,7 +141,9 @@ const getpositions = async (
         }
       }
     });
-  } catch (e) {
+  } catch (e: any) {
+    appsignal.sendError(e);
+
     console.error(e);
   }
   return candidates.reverse();
@@ -160,6 +165,8 @@ export async function run(market: Market, idx: number, orchestrator: Client) {
       await liquidate(w, orchestrator, market.address, positions);
     }
   } catch (error: any) {
+    appsignal.sendError(error);
+
     console.error(`[USK:${market.address}] ${error.message}`);
   } finally {
     await new Promise((resolve) => setTimeout(resolve, 30000));

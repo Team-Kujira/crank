@@ -1,4 +1,5 @@
 import { accountFromAny } from "@cosmjs/stargate";
+import { appsignal } from "appsignal.js";
 import { Protocol } from "./config.js";
 import { querier } from "./query.js";
 import { client } from "./wallet.js";
@@ -6,13 +7,15 @@ import * as bow from "./workers/bow.js";
 import { setup } from "./workers/index.js";
 import * as usk from "./workers/usk.js";
 
-(async function () {
+const run = async () => {
   const orchestrator = await client(0);
   try {
     const any = await querier.auth.account(orchestrator[1]);
     const account = any && accountFromAny(any);
     console.info(`[STARTUP] Orchestrator: ${account?.address}`);
-  } catch (error) {
+  } catch (error: any) {
+    appsignal.sendError(error);
+
     console.error(`Account ${orchestrator[1]} does not exist. Send funds.`);
     process.exit();
   }
@@ -40,4 +43,12 @@ import * as usk from "./workers/usk.js";
       }
     )
   );
+};
+
+(async function () {
+  try {
+    run();
+  } catch (error: any) {
+    appsignal.sendError(error);
+  }
 })();
