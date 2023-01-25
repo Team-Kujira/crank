@@ -1,5 +1,5 @@
 import { accountFromAny } from "@cosmjs/stargate";
-import { appsignal } from "appsignal.js";
+import { appsignal } from "./appsignal.js";
 import { Protocol } from "./config.js";
 import { querier } from "./query.js";
 import { client } from "./wallet.js";

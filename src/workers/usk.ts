@@ -1,4 +1,3 @@
-import { appsignal } from "appsignal.js";
 import { PageRequest } from "cosmjs-types/cosmos/base/query/v1beta1/pagination.js";
 import {
   MAINNET,
@@ -9,6 +8,7 @@ import {
   PAIRS,
 } from "kujira.js";
 import Long from "long";
+import { appsignal } from "../appsignal.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";

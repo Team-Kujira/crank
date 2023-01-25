@@ -1,6 +1,6 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
-import { appsignal } from "appsignal.js";
 import { msg, PAIRS } from "kujira.js";
+import { appsignal } from "../appsignal.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";

@@ -1,7 +1,7 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
-import { appsignal } from "appsignal.js";
 import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js";
 import { msg } from "kujira.js";
+import { appsignal } from "../appsignal.js";
 import { querier } from "../query.js";
 import { Client, client } from "../wallet.js";
 
