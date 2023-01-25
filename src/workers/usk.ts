@@ -8,7 +8,6 @@ import {
   PAIRS,
 } from "kujira.js";
 import Long from "long";
-import { appsignal } from "../appsignal.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
@@ -90,8 +89,6 @@ const liquidate = async (
     const res = await signAndBroadcast(client, orchestrator, msgs, "auto");
     console.debug(`[USK:${contract}] ${res.transactionHash}`);
   } catch (e: any) {
-    appsignal.sendError(e);
-
     console.error(`[USK:${contract}] ${e}`);
 
     positions.pop();
@@ -142,20 +139,12 @@ const getpositions = async (
       }
     });
   } catch (e: any) {
-    appsignal.sendError(e);
-
     console.error(e);
   }
   return candidates.reverse();
 };
 
 export async function run(market: Market, idx: number, orchestrator: Client) {
-  appsignal.send(
-    appsignal.createSpan((s) =>
-      s.setNamespace("background").setAction(`USK#${market}`).setParams({ idx })
-    )
-  );
-
   try {
     const w = await client(idx);
     console.info(`[USK:${market.address}] running with ${w[1]}`);
@@ -171,8 +160,6 @@ export async function run(market: Market, idx: number, orchestrator: Client) {
       await liquidate(w, orchestrator, market.address, positions);
     }
   } catch (error: any) {
-    appsignal.sendError(error);
-
     console.error(`[USK:${market.address}] ${error.message}`);
   } finally {
     await new Promise((resolve) => setTimeout(resolve, 30000));

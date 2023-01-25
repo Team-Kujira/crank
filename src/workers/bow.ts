@@ -1,6 +1,5 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
 import { msg, PAIRS } from "kujira.js";
-import { appsignal } from "../appsignal.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
@@ -27,14 +26,6 @@ export const run = async (
   idx: number,
   orchestrator: Client
 ): Promise<void> => {
-  appsignal.send(
-    appsignal.createSpan((s) =>
-      s
-        .setNamespace("background")
-        .setAction(`BOW#${contract}`)
-        .setParams({ idx })
-    )
-  );
   try {
     const w = await client(idx);
     const { orders }: { orders: { filled_amount: string }[] } =
@@ -49,8 +40,6 @@ export const run = async (
       console.debug(`[BOW:${contract}] skipping with ${w[1]}`);
     }
   } catch (error: any) {
-    appsignal.sendError(error);
-
     console.debug(`[BOW:${contract}] error ${error.message}`);
   } finally {
     await new Promise<void>((r) =>
