@@ -1,10 +1,10 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
-import { msg, PAIRS } from "kujira.js";
+import { fin, msg } from "kujira.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
-export const contracts = PAIRS.reduce(
+export const contracts = fin.PAIRS.reduce(
   (a, p) =>
     p.chainID === NETWORK && p.pool
       ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]

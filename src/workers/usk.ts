@@ -1,12 +1,5 @@
 import { PageRequest } from "cosmjs-types/cosmos/base/query/v1beta1/pagination.js";
-import {
-  MAINNET,
-  Market,
-  MARKETS_HARPOON,
-  MARKETS_KAIYO,
-  msg,
-  PAIRS,
-} from "kujira.js";
+import { fin, MAINNET, msg, usk } from "kujira.js";
 import Long from "long";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
@@ -34,13 +27,15 @@ type Position = {
   liquidation_price_cache: string;
 };
 
-const leverage = PAIRS.filter((p) => p.chainID === NETWORK).reduce(
+const leverage = fin.PAIRS.filter((p) => p.chainID === NETWORK).reduce(
   (a, p) => (p.margin ? [...a, p.margin.config] : a),
-  [] as Market[]
+  [] as usk.Market[]
 );
 
 export const markets = [
-  ...Object.values(NETWORK === MAINNET ? MARKETS_KAIYO : MARKETS_HARPOON),
+  ...Object.values(
+    NETWORK === MAINNET ? usk.MARKETS_KAIYO : usk.MARKETS_HARPOON
+  ),
   ...leverage,
 ];
 
@@ -144,7 +139,11 @@ const getpositions = async (
   return candidates.reverse();
 };
 
-export async function run(market: Market, idx: number, orchestrator: Client) {
+export async function run(
+  market: usk.Market,
+  idx: number,
+  orchestrator: Client
+) {
   try {
     const w = await client(idx);
     console.info(`[USK:${market.address}] running with ${w[1]}`);
