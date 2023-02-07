@@ -1032,7 +1032,7 @@ __metadata:
     "@cosmjs/utils": ^0.29.4
     "@types/node": ^18.11.9
     cosmjs-types: ^0.5.2
-    kujira.js: "Team-Kujira/kujira.js#9a88ccaa0953a48aebeb35eb207eb0e6de77aea5"
+    kujira.js: "Team-Kujira/kujira.js#8405f832780a7c079080120b65cbd3d7a449ff90"
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -1040,9 +1040,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@Team-Kujira/kujira.js#9a88ccaa0953a48aebeb35eb207eb0e6de77aea5":
+"kujira.js@Team-Kujira/kujira.js#8405f832780a7c079080120b65cbd3d7a449ff90":
   version: 0.5.0
-  resolution: "kujira.js@https://github.com/Team-Kujira/kujira.js.git#commit=9a88ccaa0953a48aebeb35eb207eb0e6de77aea5"
+  resolution: "kujira.js@https://github.com/Team-Kujira/kujira.js.git#commit=8405f832780a7c079080120b65cbd3d7a449ff90"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.29.4
     "@cosmjs/launchpad": ^0.27.1
@@ -1051,9 +1051,10 @@ __metadata:
     "@keplr-wallet/types": ^0.11.12
     cosmjs-types: 0.5.2
     long: ^4.0.0
+    text-encoding: ^0.7.0
     ts-node: ^10.9.1
     yarn: ^1.22.19
-  checksum: 3ccddb2ff377b549f23c93bb2701dee329464fb6dccfa65abff5ea4a84d4bd91cbd841639a853b1d9790a4ae366bf06969b01e7a77c3b1404a119624ad7d14d3
+  checksum: 355cfd24f5178f575c22d642713c539e51be1b61d6d81dbe0671c3f51193543ab3309797d203867a4b88df9bbcd7a9204e5bb620159f674ebd422dbdf9e5506a
   languageName: node
   linkType: hard
 
