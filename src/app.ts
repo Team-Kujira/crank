@@ -1,13 +1,32 @@
 import { accountFromAny } from "@cosmjs/stargate";
+import { appsignal } from "./appsignal.js";
 import { Protocol } from "./config.js";
 import { querier } from "./query.js";
-import { client } from "./wallet.js";
+import { Client, client } from "./wallet.js";
 import * as bow from "./workers/bow.js";
-import { setup } from "./workers/index.js";
+import { createGrant, getGrant } from "./workers/index.js";
 import * as usk from "./workers/usk.js";
 
-const run = async () => {
+const ENABLED = [...usk.contracts, ...bow.contracts];
+
+const run = async (orchestrator: Client) => {
+  await Promise.all(
+    ENABLED.map(
+      async (c: { address: string; protocol: Protocol }, idx: number) => {
+        switch (c.protocol) {
+          case Protocol.BOW:
+            return bow.run(c.address, idx + 1, orchestrator);
+          case Protocol.USK:
+            return usk.run(c.address, idx + 1, orchestrator);
+        }
+      }
+    )
+  );
+};
+
+(async function () {
   const orchestrator = await client(0);
+
   try {
     const any = await querier.auth.account(orchestrator[1]);
     const account = any && accountFromAny(any);
@@ -17,37 +36,22 @@ const run = async () => {
     process.exit();
   }
 
-  await [...bow.contracts, ...usk.contracts].reduce(
-    (agg, c: { address: string }, idx: number) => {
-      return agg
-        ? agg.then(() => setup(c.address, idx + 1, orchestrator))
-        : setup(c.address, idx + 1, orchestrator);
-    },
-    null as null | Promise<void>
+  const grants = await Promise.all(
+    ENABLED.map((x, idx) => getGrant(idx + 1, orchestrator))
   );
 
   await Promise.all(
-    [...bow.contracts, ...usk.contracts].map(
-      async (c: { address: string; protocol: Protocol }, idx: number) => {
-        switch (c.protocol) {
-          case Protocol.BOW:
-            return bow.run(c.address, idx + 1, orchestrator);
-          case Protocol.USK:
-            const config = usk.markets.find((x) => x.address === c.address);
-            if (!config) throw new Error(`${c.address} market not found`);
-            return usk.run(config, idx + 1, orchestrator);
-        }
-      }
-    )
+    grants.reduce((agg, grant, idx: number) => {
+      return grant ? agg : [...agg, createGrant(idx + 1, orchestrator)];
+    }, [] as Promise<void>[])
   );
-};
 
-(async function () {
   try {
-    run();
+    await run(orchestrator);
   } catch (error: any) {
+    appsignal.sendError(error);
     console.error(error);
   } finally {
-    run();
+    await run(orchestrator);
   }
 })();

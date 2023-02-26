@@ -1,19 +1,19 @@
-import { Slip10RawIndex } from "@cosmjs/crypto";
 import { StdFee } from "@cosmjs/amino";
+import { Slip10RawIndex } from "@cosmjs/crypto";
 
+import { Uint53 } from "@cosmjs/math";
 import {
   coins,
   DirectSecp256k1HdWallet,
   EncodeObject,
 } from "@cosmjs/proto-signing";
+import {
+  DeliverTxResponse,
+  GasPrice,
+  SigningStargateClient,
+} from "@cosmjs/stargate";
 import { registry } from "kujira.js";
 import { GAS_PRICE, PREFIX, RPC_ENDPOINT } from "./config.js";
-import {
-  SigningStargateClient,
-  GasPrice,
-  DeliverTxResponse,
-} from "@cosmjs/stargate";
-import { Uint53 } from "@cosmjs/math";
 
 export const wallet = (account: number) => {
   if (!process.env.MNEMONIC) throw new Error("MNEMONIC not set");

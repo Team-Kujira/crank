@@ -711,6 +711,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cosmjs-types@npm:^0.6.1":
+  version: 0.6.1
+  resolution: "cosmjs-types@npm:0.6.1"
+  dependencies:
+    long: ^4.0.0
+    protobufjs: ~6.11.2
+  checksum: 479ca1b307db35c612a420b6b5d556e58c463478bf733a8328d83455e25dadfe0bc41623bb057040aabc532c4f0afb5475328179e9315419dd77439cb4431588
+  languageName: node
+  linkType: hard
+
 "create-hash@npm:^1.1.0, create-hash@npm:^1.1.2":
   version: 1.2.0
   resolution: "create-hash@npm:1.2.0"
@@ -1031,8 +1041,8 @@ __metadata:
     "@cosmjs/proto-signing": ^0.29.4
     "@cosmjs/utils": ^0.29.4
     "@types/node": ^18.11.9
-    cosmjs-types: ^0.5.2
-    kujira.js: "Team-Kujira/kujira.js#30da81439648a460ff415caa0b731be8e9a3580b"
+    cosmjs-types: ^0.6.1
+    kujira.js: "Team-Kujira/kujira.js#2c3a4d6a49141ac0e14b71e90827954e3c64cd93"
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -1040,9 +1050,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@Team-Kujira/kujira.js#30da81439648a460ff415caa0b731be8e9a3580b":
+"kujira.js@Team-Kujira/kujira.js#2c3a4d6a49141ac0e14b71e90827954e3c64cd93":
   version: 0.5.0
-  resolution: "kujira.js@https://github.com/Team-Kujira/kujira.js.git#commit=30da81439648a460ff415caa0b731be8e9a3580b"
+  resolution: "kujira.js@https://github.com/Team-Kujira/kujira.js.git#commit=2c3a4d6a49141ac0e14b71e90827954e3c64cd93"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.29.4
     "@cosmjs/launchpad": ^0.27.1
@@ -1054,7 +1064,7 @@ __metadata:
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
     yarn: ^1.22.19
-  checksum: 8b40660dcb220d00e406610239b39d17c3a9545bba52556d2b35b1ea17170ea53a6c36800cfa492a1a80856fca976515142424102ac8d9ee9f609dd917d4ea3b
+  checksum: fdd0fa7df70f667b51c6b0fb3d5c3bc144643db8a67db90ef1e15aa29cd54fdeec463ab08f8c038e50b38c002c8ca923c0c044f8167cfdf5b8f77e01cf44de63
   languageName: node
   linkType: hard
 

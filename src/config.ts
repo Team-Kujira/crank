@@ -1,5 +1,5 @@
 import { GasPrice } from "@cosmjs/stargate";
-import { MAINNET, TESTNET } from "kujira.js";
+import { MAINNET, RPCS, TESTNET } from "kujira.js";
 
 export const NETWORK = process.env.NETWORK === "mainnet" ? MAINNET : TESTNET;
 
@@ -9,9 +9,7 @@ export enum Protocol {
 }
 
 const RPC_DEFAULT =
-  process.env.NETWORK === "mainnet"
-    ? "https://rpc.kaiyo.kujira.setten.io:443"
-    : "https://rpc.harpoon.kujira.setten.io:443";
+  process.env.NETWORK === "mainnet" ? RPCS[MAINNET][0] : RPCS[TESTNET][0];
 
 export const PREFIX = process.env.PREFIX || "kujira";
 export const RPC_ENDPOINT = process.env.RPC_ENDPOINT || RPC_DEFAULT;

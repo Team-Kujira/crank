@@ -1,47 +1,53 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
 import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js";
+import { QueryAllowanceResponse } from "cosmjs-types/cosmos/feegrant/v1beta1/query.js";
 import { msg } from "kujira.js";
-import { appsignal } from "../appsignal.js";
 import { querier } from "../query.js";
 import { Client, client } from "../wallet.js";
 
-export const setup = async (
-  contract: string,
+export const getGrant = async (
+  idx: number,
+  orchestrator: Client
+): Promise<QueryAllowanceResponse | null> => {
+  const w = await client(idx);
+  return querier.feegrant.allowance(orchestrator[1], w[1]).catch(() => null);
+};
+
+export const createGrant = async (
   idx: number,
   orchestrator: Client
 ): Promise<void> => {
   const w = await client(idx);
-  try {
-    const grant = await querier.feegrant.allowance(orchestrator[1], w[1]);
-    console.info(`[SETUP:${contract}] feegrant exists`);
-    if (grant.allowance?.granter !== orchestrator[1]) {
-      console.info(`[SETUP:${contract}] grant incorrect, recreating`);
-      let res = await orchestrator[0].signAndBroadcast(
-        orchestrator[1],
-        revokeMsg(orchestrator, w),
-        "auto"
-      );
-      console.info(`[SETUP:${contract}] revoked ${res.transactionHash}`);
+  console.info(`[SETUP:${idx}] creating feegrant`);
+  const res = await orchestrator[0].signAndBroadcast(
+    orchestrator[1],
+    grantMsg(orchestrator, w),
+    "auto"
+  );
+  assertIsDeliverTxSuccess(res);
+  console.info(`[SETUP:${idx}] done ${res.transactionHash}`);
+};
 
-      res = await orchestrator[0].signAndBroadcast(
-        orchestrator[1],
-        grantMsg(orchestrator, w),
-        "auto"
-      );
-      console.info(`[SETUP:${contract}] granted ${res.transactionHash}`);
-    }
-  } catch (error: any) {
-    appsignal.sendError(error);
+export const recreateGrant = async (
+  label: string,
+  idx: number,
+  orchestrator: Client
+): Promise<void> => {
+  const w = await client(idx);
+  console.info(`[SETUP:${label}] grant incorrect, recreating`);
+  let res = await orchestrator[0].signAndBroadcast(
+    orchestrator[1],
+    revokeMsg(orchestrator, w),
+    "auto"
+  );
+  console.info(`[SETUP:${label}] revoked ${res.transactionHash}`);
 
-    console.info(`[SETUP:${contract}] creating feegrant`);
-    const res = await orchestrator[0].signAndBroadcast(
-      orchestrator[1],
-      grantMsg(orchestrator, w),
-      "auto"
-    );
-    assertIsDeliverTxSuccess(res);
-    console.info(`[SETUP:${contract}] done ${res.transactionHash}`);
-  }
+  res = await orchestrator[0].signAndBroadcast(
+    orchestrator[1],
+    grantMsg(orchestrator, w),
+    "auto"
+  );
+  console.info(`[SETUP:${label}] granted ${res.transactionHash}`);
 };
 
 const grantMsg = (granter: Client, grantee: Client) => [
