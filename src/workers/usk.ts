@@ -153,7 +153,7 @@ export async function run(address: string, idx: number) {
 
   try {
     const w = await client(idx);
-    console.info(`[USK:${address}] running with ${w[1]}`);
+    // console.info(`[USK:${address}] running with ${w[1]}`);
 
     const price = await querier.oracle.exchangeRate(config.oracle_denom);
 

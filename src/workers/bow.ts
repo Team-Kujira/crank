@@ -4,12 +4,9 @@ import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
-const AQUA =
-  "kujira1kupjzlp96l4ypt0fdpse8slmkdkkz3g0t5evy033va0gvtw867sq0cm6q0";
-
 export const contracts = fin.PAIRS.reduce(
   (a, p) =>
-    p.chainID === NETWORK && p.pool && p.pool !== AQUA
+    p.chainID === NETWORK && p.pool
       ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]
       : a,
   [] as { address: string; protocol: Protocol }[]
@@ -35,8 +32,6 @@ export const run = async (contract: string, idx: number): Promise<void> => {
       const res = await signAndBroadcast(w, runMsg(w, contract));
       assertIsDeliverTxSuccess(res);
       console.info(`[BOW:${contract}] done ${res.transactionHash}`);
-    } else {
-      console.debug(`[BOW:${contract}] skipping with ${w[1]}`);
     }
   } catch (error: any) {
     console.debug(`[BOW:${contract}] error ${error.message}`);
