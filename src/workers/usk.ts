@@ -170,5 +170,6 @@ export async function run(address: string, idx: number) {
     console.error(`[USK:${address}] ${error.message}`);
   } finally {
     await new Promise((resolve) => setTimeout(resolve, 30000));
+    await run(address, idx);
   }
 }
