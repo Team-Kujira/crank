@@ -1,5 +1,6 @@
+import "./appsignal.js";
+
 import { accountFromAny } from "@cosmjs/stargate";
-import { appsignal } from "./appsignal.js";
 import { Protocol } from "./config.js";
 import { querier } from "./query.js";
 import { ORCHESTRATOR } from "./wallet.js";
@@ -47,7 +48,6 @@ const run = async () => {
   try {
     await run();
   } catch (error: any) {
-    appsignal.sendError(error);
     console.error(error);
   } finally {
     await run();
