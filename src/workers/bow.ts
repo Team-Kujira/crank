@@ -4,9 +4,12 @@ import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
+const AQUA =
+  "kujira1kupjzlp96l4ypt0fdpse8slmkdkkz3g0t5evy033va0gvtw867sq0cm6q0";
+
 export const contracts = fin.PAIRS.reduce(
   (a, p) =>
-    p.chainID === NETWORK && p.pool
+    p.chainID === NETWORK && p.pool && p.pool !== AQUA
       ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]
       : a,
   [] as { address: string; protocol: Protocol }[]
