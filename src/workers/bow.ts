@@ -21,11 +21,7 @@ const runMsg = (sender: Client, contract: string) => [
   }),
 ];
 
-export const run = async (
-  contract: string,
-  idx: number,
-  orchestrator: Client
-): Promise<void> => {
+export const run = async (contract: string, idx: number): Promise<void> => {
   try {
     const w = await client(idx);
     const { orders }: { orders: { filled_amount: string }[] } =
@@ -33,7 +29,7 @@ export const run = async (
     const shouldRun = orders.find((o) => o.filled_amount !== "0");
     if (shouldRun) {
       console.info(`[BOW:${contract}] running with ${w[1]}`);
-      const res = await signAndBroadcast(w, orchestrator, runMsg(w, contract));
+      const res = await signAndBroadcast(w, runMsg(w, contract));
       assertIsDeliverTxSuccess(res);
       console.info(`[BOW:${contract}] done ${res.transactionHash}`);
     } else {
@@ -47,6 +43,6 @@ export const run = async (
         r();
       }, 2500)
     );
-    run(contract, idx, orchestrator);
+    run(contract, idx);
   }
 };

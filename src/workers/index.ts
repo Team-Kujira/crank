@@ -3,20 +3,19 @@ import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js
 import { QueryAllowanceResponse } from "cosmjs-types/cosmos/feegrant/v1beta1/query.js";
 import { msg } from "kujira.js";
 import { querier } from "../query.js";
-import { Client, client } from "../wallet.js";
+import { Client, client, ORCHESTRATOR } from "../wallet.js";
 
 export const getGrant = async (
-  idx: number,
-  orchestrator: Client
+  idx: number
 ): Promise<QueryAllowanceResponse | null> => {
   const w = await client(idx);
+  const orchestrator = await ORCHESTRATOR;
   return querier.feegrant.allowance(orchestrator[1], w[1]).catch(() => null);
 };
 
-export const createGrant = async (
-  idx: number,
-  orchestrator: Client
-): Promise<void> => {
+export const createGrant = async (idx: number): Promise<void> => {
+  const orchestrator = await ORCHESTRATOR;
+
   const w = await client(idx);
   console.info(`[SETUP:${idx}] creating feegrant`);
   const res = await orchestrator[0].signAndBroadcast(
@@ -30,9 +29,9 @@ export const createGrant = async (
 
 export const recreateGrant = async (
   label: string,
-  idx: number,
-  orchestrator: Client
+  idx: number
 ): Promise<void> => {
+  const orchestrator = await ORCHESTRATOR;
   const w = await client(idx);
   console.info(`[SETUP:${label}] grant incorrect, recreating`);
   let res = await orchestrator[0].signAndBroadcast(
