@@ -6,28 +6,6 @@ import { Client, client, signAndBroadcast } from "../wallet.js";
 
 const MARKET_MAX_LTV = 0.6;
 
-const EXPLOITS = [
-  "kujira14k29ul9dad4zsprncrxr5csjg4m3tfxvu664na",
-  "kujira14xar2tlxgj0fpuj2ces8pscecy8x7ptp5x0s0p",
-  "kujira1ay0t6n5nhuzm7e00zasknfgzzt9m9y3cwngpjg",
-  "kujira1f34lcgd8rgy8h9s5ycqsu3g68wdrag6qc8mjws",
-  "kujira1mnuwufw9m899thraq8l32fkrdvucm3sq88rsta",
-  "kujira1tte2z3akwjm7xyr3qljnp66vq24a4y44fv2c42",
-  "kujira1vgnxsrmthlzw99tcffeu86ts67lfa3384pvv08",
-  "kujira1ws9he4y0c9p4w2z27np6t7kt8gqktv5klu8cqv",
-
-  "kujira10wjc6xe6sc30zve3nxargne63k4vev8hjr5xxm",
-  "kujira14405udpyxl0vjw92zhun4j8mdedqw8tyy3uszc",
-  "kujira1c7fxwsttxlqjs92f06ml068l20hujx2ly5ez0c",
-  "kujira1klmjk2chkqewjn9s7gvmtwf8k2g7v85ahs2jy7",
-  "kujira1p0rdg2y86vdlwflgzcp26hzc76z5p8hn4s4qxt",
-  "kujira1qzt9a2w0pj5u8eq4grpg4kyvxmj0rf76leucx5",
-  "kujira1ssnsjyyd76dx5xv9wky04u468zja5w6ufzkx2y",
-  "kujira1vtdqw78gy9eyhwtsp4ad4t373snmv35jelrt2d",
-  "kujira1wlqfz7kc630azswlzlk7p673stdv2spv37l03w",
-  "kujira1zvc2625cgfvxrwguhffe5usw80gppfrf60e962",
-];
-
 type Position = {
   owner: string;
   deposit_amount: string;
@@ -140,10 +118,12 @@ const getpositions = async (
         const liqiuidation_price =
           debt_amount / (deposit_amount * MARKET_MAX_LTV);
 
+        const solvency_price = debt_amount / deposit_amount;
+
         if (
           liqiuidation_price * factor > price &&
-          // Exclude the insolvent positions from the Feb exploit
-          !EXPLOITS.includes(v.owner)
+          // Inbsolvent positions don't liquidate
+          solvency_price * factor < price
         ) {
           candidates.push(p);
         }
