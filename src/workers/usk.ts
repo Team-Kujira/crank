@@ -85,7 +85,7 @@ const getpositions = async (
   address: string,
   price: number
 ): Promise<Position[]> => {
-  console.debug(`[USK:${address}] Running ${new Date()}`);
+  // console.debug(`[USK:${address}] Running ${new Date()}`);
 
   let candidates: Position[] = [];
 
