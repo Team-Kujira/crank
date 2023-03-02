@@ -4,11 +4,8 @@ import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
-export const contracts = fin.PAIRS.reduce(
-  (a, p) =>
-    p.chainID === NETWORK && p.pool
-      ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]
-      : a,
+export const contracts = Object.values(fin.PAIRS[NETWORK]).reduce(
+  (a, p) => (p.pool ? [{ address: p.pool, protocol: Protocol.BOW }, ...a] : a),
   [] as { address: string; protocol: Protocol }[]
 );
 

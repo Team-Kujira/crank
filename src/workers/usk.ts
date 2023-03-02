@@ -1,5 +1,5 @@
 import { decodeCosmosSdkDecFromProto } from "@cosmjs/stargate";
-import { fin, MAINNET, msg, usk } from "kujira.js";
+import { fin, msg, usk } from "kujira.js";
 import { NETWORK, Protocol } from "../config.js";
 import { getAllContractState, querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
@@ -15,23 +15,19 @@ type Position = {
   liquidation_price_cache: string;
 };
 
-export const leverage = fin.PAIRS.filter((p) => p.chainID === NETWORK).reduce(
+export const leverage = Object.values(fin.PAIRS[NETWORK]).reduce(
   (a, p) => (p.margin ? [...a, p.margin] : a),
   [] as fin.Margin[]
 );
 
-export const markets = [
-  ...Object.values(
-    NETWORK === MAINNET ? usk.MARKETS_KAIYO : usk.MARKETS_HARPOON
-  ),
-];
+export const markets = [...Object.values(usk.MARKETS[NETWORK])];
 
 export const contracts = [
   ...markets.map(({ address }) => ({
     address,
     protocol: Protocol.USK,
   })),
-  ...leverage.map((a) => ({ address: a.market, protocol: Protocol.USK })),
+  ...leverage.map((a) => ({ address: a.address, protocol: Protocol.USK })),
 ];
 
 const YEAR_NANOSECOND = 31_536_000_000_000_000;
@@ -106,7 +102,7 @@ const getpositions = async (
           parseInt(p.interest_amount) +
           interest(parseInt(v.updated_at), mint_amount);
         const debt_amount = mint_amount + interest_amount;
-        const pair = fin.PAIRS.find(
+        const pair = Object.values(fin.PAIRS[NETWORK]).find(
           (x) =>
             x.denoms[0].eq(config.collateral_denom) &&
             x.denoms[1].eq(config.stable_denom)
@@ -139,7 +135,8 @@ const getpositions = async (
 export async function run(address: string, idx: number) {
   const config =
     markets.find((x) => x.address === address) ||
-    fin.PAIRS.find((l) => l.margin?.market === address)?.margin?.config;
+    Object.values(fin.PAIRS[NETWORK]).find((l) => l.margin?.address === address)
+      ?.margin;
   if (!config) throw new Error(`${address} market not found`);
 
   try {
