@@ -39,11 +39,11 @@ const run = async () => {
 
   const grants = await Promise.all(ENABLED.map((x, idx) => getGrant(idx + 1)));
 
-  await Promise.all(
-    grants.reduce((agg, grant, idx: number) => {
-      return grant ? agg : [...agg, createGrant(idx + 1)];
-    }, [] as Promise<void>[])
-  );
+  await grants.reduce(async (agg, grant, idx: number) => {
+    if (grant) return agg;
+    await agg;
+    return createGrant(idx + 1);
+  }, Promise.resolve());
 
   try {
     await run();
