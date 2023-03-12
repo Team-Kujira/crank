@@ -6,8 +6,15 @@ import { Client, client, signAndBroadcast } from "../wallet.js";
 
 const RETRIES: Record<string, number> = {};
 
+const DISABLED = (process.env.DISABLED_BOW || "")
+  .split(",")
+  .map((x) => x.trim());
+
 export const contracts = Object.values(fin.PAIRS[NETWORK]).reduce(
-  (a, p) => (p.pool ? [{ address: p.pool, protocol: Protocol.BOW }, ...a] : a),
+  (a, p) =>
+    p.pool && !DISABLED.includes(p.pool)
+      ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]
+      : a,
   [] as { address: string; protocol: Protocol }[]
 );
 
