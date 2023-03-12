@@ -4,6 +4,8 @@ import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
+const RETRIES: Record<string, number> = {};
+
 export const contracts = Object.values(fin.PAIRS[NETWORK]).reduce(
   (a, p) => (p.pool ? [{ address: p.pool, protocol: Protocol.BOW }, ...a] : a),
   [] as { address: string; protocol: Protocol }[]
@@ -28,15 +30,22 @@ export const run = async (contract: string, idx: number): Promise<void> => {
       console.info(`[BOW:${contract}] running with ${w[1]}`);
       const res = await signAndBroadcast(w, runMsg(w, contract));
       assertIsDeliverTxSuccess(res);
+      RETRIES[contract] = 0;
       console.info(`[BOW:${contract}] done ${res.transactionHash}`);
     }
   } catch (error: any) {
-    console.debug(`[BOW:${contract}] error ${error.message}`);
+    const retries = RETRIES[contract] || 0;
+    RETRIES[contract] = retries + 1;
+
+    console.debug(`[BOW:${contract}:${retries}] error ${error.message}`);
   } finally {
+    const retries = RETRIES[contract] || 0;
+    const backoff = Math.min(2 ** retries * 1000, 60 * 60 * 1000);
+
     await new Promise<void>((r) =>
       setTimeout(() => {
         r();
-      }, 2500)
+      }, backoff + 1500)
     );
     run(contract, idx);
   }
