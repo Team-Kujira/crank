@@ -11,7 +11,7 @@
     "@cosmjs/utils": "^0.29.4",
     "@types/node": "^18.11.9",
     "cosmjs-types": "^0.6.1",
-    "kujira.js": "Team-Kujira/kujira.js#8d7bfb8a180fb7e67d0666e228bd01ab56563929",
+    "kujira.js": "Team-Kujira/kujira.js#3f6a07b0a8aa23a6e4cc21cf1b04fc2cfd22470e",
     "protobufjs": "^7.1.2",
     "text-encoding": "^0.7.0",
     "ts-node": "^10.9.1",
