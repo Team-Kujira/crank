@@ -104,8 +104,8 @@ const getpositions = async (
         const debt_amount = mint_amount + interest_amount;
         const pair = Object.values(fin.PAIRS[NETWORK]).find(
           (x) =>
-            x.denoms[0].eq(config.collateral_denom) &&
-            x.denoms[1].eq(config.stable_denom)
+            x.denoms[0].eq(config.collateralDenom) &&
+            x.denoms[1].eq(config.stableDenom)
         );
 
         if (!pair) throw new Error(`Pair not found for USK market ${address}`);
@@ -143,7 +143,7 @@ export async function run(address: string, idx: number) {
     const w = await client(idx);
     // console.info(`[USK:${address}] running with ${w[1]}`);
 
-    const price = await querier.oracle.exchangeRate(config.oracle_denom);
+    const price = await querier.oracle.exchangeRate(config.oracleDenom);
 
     const positions = await getpositions(
       config,
