@@ -108,9 +108,7 @@ const getpositions = async (
             x.denoms[1].eq(config.stableDenom)
         );
 
-        if (!pair) throw new Error(`Pair not found for USK market ${address}`);
-
-        const factor = 10 ** pair.decimalDelta;
+        const factor = pair ? 10 ** pair.decimalDelta : 1;
         const liqiuidation_price =
           debt_amount / (deposit_amount * MARKET_MAX_LTV);
 
