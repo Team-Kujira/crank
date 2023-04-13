@@ -6,6 +6,7 @@ export const NETWORK = process.env.NETWORK === "mainnet" ? MAINNET : TESTNET;
 export enum Protocol {
   USK = "usk",
   BOW = "bow",
+  GHOST = "ghost",
 }
 
 const RPC_DEFAULT =

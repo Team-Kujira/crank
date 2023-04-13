@@ -5,10 +5,11 @@ import { Protocol } from "./config.js";
 import { querier } from "./query.js";
 import { ORCHESTRATOR } from "./wallet.js";
 import * as bow from "./workers/bow.js";
+import * as ghost from "./workers/ghost.js";
 import { createGrant, getGrant } from "./workers/index.js";
 import * as usk from "./workers/usk.js";
 
-const ENABLED = [...usk.contracts, ...bow.contracts];
+const ENABLED = [...usk.contracts, ...bow.contracts, ...ghost.contracts];
 
 const run = async () => {
   await Promise.all(
@@ -19,6 +20,8 @@ const run = async () => {
             return bow.run(c.address, idx + 1);
           case Protocol.USK:
             return usk.run(c.address, idx + 1);
+          case Protocol.GHOST:
+            return ghost.run(c.address, idx + 1);
         }
       }
     )
