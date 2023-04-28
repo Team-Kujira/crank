@@ -90,7 +90,7 @@ const getpositions = async (
         const debtValue = mulDec(debtAmount, debtPrice);
         const ratio = divToNumber(debtValue, collateralValue);
 
-        if (ratio >= config.maxLtv) {
+        if (ratio >= config.maxLtv && collateralValue.gt(debtValue)) {
           candidates.push(p.holder);
         }
       }
