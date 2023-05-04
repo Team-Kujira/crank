@@ -39,6 +39,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.21.0":
+  version: 7.21.5
+  resolution: "@babel/runtime@npm:7.21.5"
+  dependencies:
+    regenerator-runtime: ^0.13.11
+  checksum: 358f2779d3187f5c67ad302e8f8d435412925d0b991d133c7d4a7b1ddd5a3fda1b6f34537cb64628dfd96a27ae46df105bed3895b8d754b88cacdded8d1129dd
+  languageName: node
+  linkType: hard
+
+"@chain-registry/types@npm:^0.16.0":
+  version: 0.16.0
+  resolution: "@chain-registry/types@npm:0.16.0"
+  dependencies:
+    "@babel/runtime": ^7.21.0
+  checksum: 494c42f494583cd9aa05c0088191864591ac28909c0323fd0d0d6922b2866c3690c59558391ac3843778275ad308845a791019081d0f65d11d72e0d64071d345
+  languageName: node
+  linkType: hard
+
 "@colors/colors@npm:1.5.0":
   version: 1.5.0
   resolution: "@colors/colors@npm:1.5.0"
@@ -777,7 +795,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@injectivelabs/chain-api@npm:^1.9.9":
+"@injectivelabs/chain-api@npm:1.9.9":
   version: 1.9.9
   resolution: "@injectivelabs/chain-api@npm:1.9.9"
   dependencies:
@@ -2132,6 +2150,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chain-registry@npm:^1.13.0":
+  version: 1.13.0
+  resolution: "chain-registry@npm:1.13.0"
+  dependencies:
+    "@babel/runtime": ^7.21.0
+    "@chain-registry/types": ^0.16.0
+  checksum: ba1343f57f79f9ef64a9c736f0b4c10f7a9e2509d6aa2e41fc793f84daf922253376c96a8e29a44b41bf67289a9bb416263b7c4f16238c57c6fe6f9c42c88299
+  languageName: node
+  linkType: hard
+
 "charenc@npm:~0.0.1":
   version: 0.0.2
   resolution: "charenc@npm:0.0.2"
@@ -2973,7 +3001,7 @@ __metadata:
     "@types/node": ^18.11.9
     cosmjs-types: ^0.7.2
     ethers: ^5.5.4
-    kujira.js: ^0.8.30
+    kujira.js: ^0.8.45
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -2981,23 +3009,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@npm:^0.8.30":
-  version: 0.8.30
-  resolution: "kujira.js@npm:0.8.30"
+"kujira.js@npm:^0.8.45":
+  version: 0.8.45
+  resolution: "kujira.js@npm:0.8.45"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.30.1
     "@cosmjs/launchpad": ^0.27.1
     "@cosmjs/stargate": ^0.30.1
     "@ethersproject/bignumber": ^5.7.0
-    "@injectivelabs/chain-api": ^1.9.9
+    "@injectivelabs/chain-api": 1.9.9
     "@keplr-wallet/types": ^0.11.12
     "@types/google-protobuf": ^3.15.6
+    chain-registry: ^1.13.0
     cosmjs-types: ^0.7.2
     long: ^4.0.0
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
     yarn: ^1.22.19
-  checksum: aafd9ff088e9ea8c7be8769acbe0f4ad3ad6c1293fcf3bf4cead28cebba4afe0a6432d9cc7000d581973b7bbb0686e066f8b5ea4b30f722de018f808d9a154cc
+  checksum: 18b8ba1c289f1807a07abb2f225c6dfd88d4d922c196d661e4fffce7c3de25165d54bb45aa07f9eaeaa512e4cdde1cc3d02a897a7ef6a407b2079cc1d3be95fe
   languageName: node
   linkType: hard
 
@@ -3659,6 +3688,13 @@ __metadata:
   version: 1.0.0
   resolution: "readonly-date@npm:1.0.0"
   checksum: 78481e2abf3c2f9bc526029458aee3e2b1c476ca1434c4cc9db5c9aba51bf8f1323c1995d764ff01f2055b01f13e05416b2e14b387f644b0a5a56554c3ee9d0a
+  languageName: node
+  linkType: hard
+
+"regenerator-runtime@npm:^0.13.11":
+  version: 0.13.11
+  resolution: "regenerator-runtime@npm:0.13.11"
+  checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
   languageName: node
   linkType: hard
 
