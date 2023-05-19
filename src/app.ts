@@ -9,7 +9,7 @@ import * as ghost from "./workers/ghost.js";
 import { createGrant, getGrant } from "./workers/index.js";
 import * as usk from "./workers/usk.js";
 
-const ENABLED = [...usk.contracts, ...bow.contracts];
+const ENABLED = [...usk.contracts, ...bow.contracts, ...ghost.contracts];
 
 const run = async () => {
   await Promise.all(
