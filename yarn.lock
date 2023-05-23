@@ -3001,7 +3001,7 @@ __metadata:
     "@types/node": ^18.11.9
     cosmjs-types: ^0.7.2
     ethers: ^5.5.4
-    kujira.js: ^0.8.74
+    kujira.js: ^0.8.75
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -3009,9 +3009,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@npm:^0.8.74":
-  version: 0.8.74
-  resolution: "kujira.js@npm:0.8.74"
+"kujira.js@npm:^0.8.75":
+  version: 0.8.75
+  resolution: "kujira.js@npm:0.8.75"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.30.1
     "@cosmjs/launchpad": ^0.27.1
@@ -3026,7 +3026,7 @@ __metadata:
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
     yarn: ^1.22.19
-  checksum: a030ababb5e281006e18b182e01ed40a28cd19c8798f2b89dd10fb7522e749e3632ac2b709f3701d9f1e5bb80ecc26cc33d8eac721b5554192201dd0d41859e2
+  checksum: 3471adb133d5f61c8d406d3a5fb3d171423036df81ebd46537f9b0ee48db34c47202029c6f9f41e55e9388b98e9bd41f0d405a49664e96d9278c8478995bcd46
   languageName: node
   linkType: hard
 
