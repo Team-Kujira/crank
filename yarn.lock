@@ -2150,13 +2150,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chain-registry@npm:^1.13.0":
-  version: 1.13.0
-  resolution: "chain-registry@npm:1.13.0"
+"chain-registry@npm:^1.14.0":
+  version: 1.14.0
+  resolution: "chain-registry@npm:1.14.0"
   dependencies:
     "@babel/runtime": ^7.21.0
     "@chain-registry/types": ^0.16.0
-  checksum: ba1343f57f79f9ef64a9c736f0b4c10f7a9e2509d6aa2e41fc793f84daf922253376c96a8e29a44b41bf67289a9bb416263b7c4f16238c57c6fe6f9c42c88299
+  checksum: 6b8adc80424525ae67c7228b398bc6119d63292b1504b20fbd1b07c74c2133a3d2e3d49c7266534b5580044cf3b542a5e7f84edb5252e4cd7530fb571fc1fe49
   languageName: node
   linkType: hard
 
@@ -3001,7 +3001,7 @@ __metadata:
     "@types/node": ^18.11.9
     cosmjs-types: ^0.7.2
     ethers: ^5.5.4
-    kujira.js: ^0.8.75
+    kujira.js: ^0.8.77
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -3009,9 +3009,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@npm:^0.8.75":
-  version: 0.8.75
-  resolution: "kujira.js@npm:0.8.75"
+"kujira.js@npm:^0.8.77":
+  version: 0.8.77
+  resolution: "kujira.js@npm:0.8.77"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.30.1
     "@cosmjs/launchpad": ^0.27.1
@@ -3020,13 +3020,13 @@ __metadata:
     "@injectivelabs/chain-api": 1.9.9
     "@keplr-wallet/types": ^0.11.12
     "@types/google-protobuf": ^3.15.6
-    chain-registry: ^1.13.0
+    chain-registry: ^1.14.0
     cosmjs-types: ^0.7.2
     long: ^4.0.0
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
     yarn: ^1.22.19
-  checksum: 3471adb133d5f61c8d406d3a5fb3d171423036df81ebd46537f9b0ee48db34c47202029c6f9f41e55e9388b98e9bd41f0d405a49664e96d9278c8478995bcd46
+  checksum: 63ba3a165a8903e840f08c0b526b3bbab320844bb9f31e019986d0057d5fcb6d7b4313de8838f428e88cac82d57dc841583c2eb19aedb1b4a6d26318961f5439
   languageName: node
   linkType: hard
 
