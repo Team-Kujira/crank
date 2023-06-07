@@ -101,7 +101,7 @@ const getpositions = async (
         const interest_amount =
           parseInt(p.interest_amount) +
           interest(parseInt(v.updated_at), mint_amount);
-        const debt_amount = mint_amount + interest_amount;
+        const debt_amount = mint_amount; //+ interest_amount;
         const pair = Object.values(fin.PAIRS[NETWORK]).find(
           (x) =>
             x.denoms[0].eq(config.collateralDenom) &&
@@ -127,7 +127,9 @@ const getpositions = async (
     console.error(e);
   }
 
-  return candidates;
+  console.log(candidates);
+
+  return candidates.reverse();
 };
 
 export async function run(address: string, idx: number) {
