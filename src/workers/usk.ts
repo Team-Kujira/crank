@@ -127,8 +127,6 @@ const getpositions = async (
     console.error(e);
   }
 
-  console.log(candidates);
-
   return candidates.reverse();
 };
 
