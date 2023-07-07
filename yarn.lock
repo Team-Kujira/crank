@@ -2173,13 +2173,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chain-registry@npm:^1.14.0":
-  version: 1.14.0
-  resolution: "chain-registry@npm:1.14.0"
+"chain-registry@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "chain-registry@npm:1.15.0"
   dependencies:
     "@babel/runtime": ^7.21.0
     "@chain-registry/types": ^0.16.0
-  checksum: 6b8adc80424525ae67c7228b398bc6119d63292b1504b20fbd1b07c74c2133a3d2e3d49c7266534b5580044cf3b542a5e7f84edb5252e4cd7530fb571fc1fe49
+  checksum: b52766106723b20c9ecdc9e33f3d5bdeca27e973d3b2787125a8ddb0e0d8fd275dc035c4d1f65f6b7ca793748285dd371bd872c68f5531460c8f2e30405fdfdb
   languageName: node
   linkType: hard
 
@@ -2326,6 +2326,16 @@ __metadata:
     long: ^4.0.0
     protobufjs: ~6.11.2
   checksum: 4a0b730a7f1ae8efa8bd044f9ebdd7921f26319ff2abf36ac7e2f93ef6f3e73d90c1775ce2325611d47c4ccc72a708a63e31e89d9d80ad75c1107c7228e09bc8
+  languageName: node
+  linkType: hard
+
+"cosmjs-types@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "cosmjs-types@npm:0.8.0"
+  dependencies:
+    long: ^4.0.0
+    protobufjs: ~6.11.2
+  checksum: 99714ec956d2cb2e521d39896c9c9a24cf9df0d370265c203646ea015b51e86472efc0cb11f67a80f0649d178b0bcff77ac659e67fdfc8b2437cd7a42018577f
   languageName: node
   linkType: hard
 
@@ -3024,7 +3034,7 @@ __metadata:
     "@types/node": ^18.11.9
     cosmjs-types: ^0.7.2
     ethers: ^5.5.4
-    kujira.js: ^0.8.86
+    kujira.js: ^0.8.100
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -3032,9 +3042,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@npm:^0.8.86":
-  version: 0.8.86
-  resolution: "kujira.js@npm:0.8.86"
+"kujira.js@npm:^0.8.100":
+  version: 0.8.110
+  resolution: "kujira.js@npm:0.8.110"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.30.1
     "@cosmjs/launchpad": ^0.27.1
@@ -3044,13 +3054,12 @@ __metadata:
     "@injectivelabs/core-proto-ts": ^0.0.18
     "@keplr-wallet/types": ^0.11.12
     "@types/google-protobuf": ^3.15.6
-    chain-registry: ^1.14.0
-    cosmjs-types: ^0.7.2
+    chain-registry: ^1.15.0
+    cosmjs-types: ^0.8.0
     long: ^4.0.0
     text-encoding: ^0.7.0
-    ts-node: ^10.9.1
     yarn: ^1.22.19
-  checksum: bd61e96247812757f3a2d141def18f6d2c9ec9bc77db2330ff9d8ceff7da9bb774c1ffbc8ea4be9e9f700b48f2c19fd7dc177e002a03423c7a593732d7508926
+  checksum: 7e49e6861ec9c23c1744321e96cf01f5cca52b7ebf460d0d5ebc740144bee1139fd407c1327fe48b677000b54afc053755068d4e447a688c95a7eff577f2b8a5
   languageName: node
   linkType: hard
 
