@@ -117,7 +117,9 @@ const getpositions = async (
         if (
           liqiuidation_price * factor > price &&
           // Inbsolvent positions don't liquidate
-          solvency_price * factor < price
+          solvency_price * factor < price &&
+          // Ignore small positions. rounding issues
+          deposit_amount > 10
         ) {
           candidates.push(p);
         }
