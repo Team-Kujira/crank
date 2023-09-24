@@ -15,7 +15,14 @@ export const contracts = Object.values(fin.PAIRS[NETWORK]).reduce(
     p.pool && !DISABLED.includes(p.pool)
       ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]
       : a,
-  [] as { address: string; protocol: Protocol }[]
+  [
+    {
+      // Temporary addition for Stable pool
+      address:
+        "kujira1nyygwntd5g6jjtng0xqs82c8p7a09fjkmtd955fq8xc97fvn9p0srzxter",
+      protocol: Protocol.BOW,
+    },
+  ] as { address: string; protocol: Protocol }[]
 );
 
 const runMsg = (sender: Client, contract: string) => [
