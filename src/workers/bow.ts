@@ -1,5 +1,5 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
-import { fin, msg } from "kujira.js";
+import { bow, msg } from "kujira.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
@@ -10,11 +10,11 @@ const DISABLED = (process.env.DISABLED_BOW || "")
   .split(",")
   .map((x) => x.trim());
 
-export const contracts = Object.values(fin.PAIRS[NETWORK]).reduce(
+export const contracts = Object.values(bow.POOLS[NETWORK]).reduce(
   (a, p) =>
-    p.pool && !DISABLED.includes(p.pool)
-      ? [{ address: p.pool, protocol: Protocol.BOW }, ...a]
-      : a,
+    DISABLED.includes(p.address)
+      ? a
+      : [{ address: p.address, protocol: Protocol.BOW }, ...a],
   [] as { address: string; protocol: Protocol }[]
 );
 
