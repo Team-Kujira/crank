@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  crank:
+    build: .
+    image: kujira-crank
+    container_name: kujira-crank
+    env_file:
+      - .env
+    restart: always
+    stdin_open: true
+    tty: true
