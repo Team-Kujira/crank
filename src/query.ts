@@ -1,4 +1,4 @@
-import { HttpBatchClient, Tendermint34Client } from "@cosmjs/tendermint-rpc";
+import { HttpBatchClient, Tendermint37Client } from "@cosmjs/tendermint-rpc";
 import {
   PageRequest,
   PageResponse,
@@ -9,7 +9,7 @@ import Long from "long";
 import { RPC_ENDPOINT } from "./config.js";
 
 const rpcClient = new HttpBatchClient(RPC_ENDPOINT, { dispatchInterval: 2000 });
-const client = await Tendermint34Client.create(rpcClient);
+const client = await Tendermint37Client.create(rpcClient);
 export const querier = kujiraQueryClient({ client });
 
 export const getAllContractState = async (
