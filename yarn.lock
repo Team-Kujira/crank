@@ -784,50 +784,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@improbable-eng/grpc-web@npm:^0.13.0":
-  version: 0.13.0
-  resolution: "@improbable-eng/grpc-web@npm:0.13.0"
-  dependencies:
-    browser-headers: ^0.4.0
-  peerDependencies:
-    google-protobuf: ^3.2.0
-  checksum: e7cd4ae5ed269be4215b72dea6727c1e8fd139a408386b24084842fbbfa249fb45ea12033ade2872a3d5cdfeb0e0b487563ff9f5b1c308e32aecccf7b80ca441
-  languageName: node
-  linkType: hard
-
-"@injectivelabs/chain-api@npm:1.9.9":
-  version: 1.9.9
-  resolution: "@injectivelabs/chain-api@npm:1.9.9"
-  dependencies:
-    "@improbable-eng/grpc-web": ^0.13.0
-    google-protobuf: ^3.13.0
-  checksum: 87ac0fb32653b571c23f340f426deb4a08dc1e4a50f67e9aa9029493e8e207e563d854d52b89966ef5b876d05b5758302b1091da4da0e33b40cd8e45019fb805
-  languageName: node
-  linkType: hard
-
-"@injectivelabs/core-proto-ts@npm:^0.0.18":
-  version: 0.0.18
-  resolution: "@injectivelabs/core-proto-ts@npm:0.0.18"
-  dependencies:
-    "@injectivelabs/grpc-web": ^0.0.1
-    google-protobuf: ^3.14.0
-    protobufjs: ^7.0.0
-    rxjs: ^7.4.0
-  checksum: b57df18365f39c961b124da3881c73825559649cfbd5b13fe937db3ce23170ef5ee4cbe8206f63a61e2b51d03f98bee370b9f09c78cf27880f6d10284d23af93
-  languageName: node
-  linkType: hard
-
-"@injectivelabs/grpc-web@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@injectivelabs/grpc-web@npm:0.0.1"
-  dependencies:
-    browser-headers: ^0.4.1
-  peerDependencies:
-    google-protobuf: ^3.14.0
-  checksum: 121832da2ee37e48531b1e90003778afd75668e527a25c8539310081677a5e662689ef7e68fe6014b86f65175fdfd58cc2cd33a959d6661d320810b08996b03c
-  languageName: node
-  linkType: hard
-
 "@iov/crypto@npm:2.1.0":
   version: 2.1.0
   resolution: "@iov/crypto@npm:2.1.0"
@@ -2108,13 +2064,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browser-headers@npm:^0.4.0, browser-headers@npm:^0.4.1":
-  version: 0.4.1
-  resolution: "browser-headers@npm:0.4.1"
-  checksum: 28b927dd90e4882eeb0625cd4a20a8e868f892144bca794a9b027fad9d2094656daf46473cb9084d650590504c581dd6a711146243035b66e75ade61bbe4d3cf
-  languageName: node
-  linkType: hard
-
 "buffer@npm:6.0.3":
   version: 6.0.3
   resolution: "buffer@npm:6.0.3"
@@ -2695,13 +2644,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"google-protobuf@npm:^3.13.0, google-protobuf@npm:^3.14.0":
-  version: 3.21.2
-  resolution: "google-protobuf@npm:3.21.2"
-  checksum: 3caa2e1e2654714cc1a201ac5e5faabcaa48f5fba3d8ff9b64ca66fe19e4e0506b94053f32eddc77bf3a7a47ac1660315c6744185c1e2bb27654fd76fe91b988
-  languageName: node
-  linkType: hard
-
 "graceful-fs@npm:^4.2.6":
   version: 4.2.10
   resolution: "graceful-fs@npm:4.2.10"
@@ -3034,7 +2976,7 @@ __metadata:
     "@types/node": ^18.11.9
     cosmjs-types: ^0.7.2
     ethers: ^5.5.4
-    kujira.js: ^0.9.56
+    kujira.js: ^0.9.60
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -3042,16 +2984,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@npm:^0.9.56":
-  version: 0.9.56
-  resolution: "kujira.js@npm:0.9.56"
+"kujira.js@npm:^0.9.60":
+  version: 0.9.60
+  resolution: "kujira.js@npm:0.9.60"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.31.1
     "@cosmjs/launchpad": ^0.27.1
     "@cosmjs/stargate": ^0.31.1
     "@ethersproject/bignumber": ^5.7.0
-    "@injectivelabs/chain-api": 1.9.9
-    "@injectivelabs/core-proto-ts": ^0.0.18
     "@keplr-wallet/types": ^0.11.12
     "@types/google-protobuf": ^3.15.6
     chain-registry: ^1.20.0
@@ -3059,7 +2999,7 @@ __metadata:
     long: ^4.0.0
     text-encoding: ^0.7.0
     yarn: ^1.22.19
-  checksum: ba87022d367eca3053c23666e2c49212fab47c7dedfb8f9661a04e79ceaafe17c7340359896eb8074c4e86edb6dea95693593db7f7e9764228116efabfc4070f
+  checksum: 97ae7112c6e38539f7ef9ce2405d1064fc00576d66d39dcedcdfc1c7c2b1b89ba01539b004600f62e08fbee1043755728d369bbe12b016668c02fea033641a91
   languageName: node
   linkType: hard
 
@@ -3819,15 +3759,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.4.0":
-  version: 7.8.1
-  resolution: "rxjs@npm:7.8.1"
-  dependencies:
-    tslib: ^2.1.0
-  checksum: de4b53db1063e618ec2eca0f7965d9137cabe98cf6be9272efe6c86b47c17b987383df8574861bcced18ebd590764125a901d5506082be84a8b8e364bf05f119
-  languageName: node
-  linkType: hard
-
 "safe-buffer@npm:^5.0.1, safe-buffer@npm:^5.1.0, safe-buffer@npm:^5.1.2, safe-buffer@npm:^5.2.0, safe-buffer@npm:~5.2.0":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
@@ -4128,13 +4059,6 @@ __metadata:
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: ae3ed5f9ce29932d049908ebfdf21b3a003a85653a9a140d614da6b767a93ef94f460e52c3d787f0e4f383546981713f165037dc2274df212ea9f8a4541004e1
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.1.0":
-  version: 2.5.2
-  resolution: "tslib@npm:2.5.2"
-  checksum: 4d3c1e238b94127ed0e88aa0380db3c2ddae581dc0f4bae5a982345e9f50ee5eda90835b8bfba99b02df10a5734470be197158c36f9129ac49fdc14a6a9da222
   languageName: node
   linkType: hard
 
