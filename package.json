@@ -12,7 +12,7 @@
     "@types/node": "^18.11.9",
     "cosmjs-types": "^0.7.2",
     "ethers": "^5.5.4",
-    "kujira.js": "^0.9.74",
+    "kujira.js": "^0.9.81",
     "protobufjs": "^7.1.2",
     "text-encoding": "^0.7.0",
     "ts-node": "^10.9.1",
