@@ -6,7 +6,9 @@ export const NETWORK = process.env.NETWORK === "mainnet" ? MAINNET : TESTNET;
 export enum Protocol {
   USK = "usk",
   BOW = "bow",
+  BowMargin = "bow-margin",
   GHOST = "ghost",
+  Unstake = "unstake",
 }
 
 const RPC_DEFAULT =
@@ -15,5 +17,5 @@ const RPC_DEFAULT =
 export const PREFIX = process.env.PREFIX || "kujira";
 export const RPC_ENDPOINT = process.env.RPC_ENDPOINT || RPC_DEFAULT;
 export const GAS_PRICE = GasPrice.fromString(
-  process.env.GAS_PRICE || "0.00125ukuji"
+  process.env.GAS_PRICE || "0.0034ukuji"
 );

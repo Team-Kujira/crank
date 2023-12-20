@@ -7,9 +7,10 @@ import { ORCHESTRATOR } from "./wallet.js";
 import * as bow from "./workers/bow.js";
 import * as ghost from "./workers/ghost.js";
 import { createGrant, getGrant } from "./workers/index.js";
+import * as unstake from "./workers/unstake.js";
 import * as usk from "./workers/usk.js";
 
-const ENABLED = [...usk.contracts, ...bow.contracts, ...ghost.contracts];
+const ENABLED = [...unstake.contracts];
 
 const run = async () => {
   await Promise.all(
@@ -22,6 +23,10 @@ const run = async () => {
             return usk.run(c.address, idx + 1);
           case Protocol.GHOST:
             return ghost.run(c.address, idx + 1);
+          case Protocol.BowMargin:
+            return null;
+          case Protocol.Unstake:
+            return unstake.run(c.address, idx + 1);
         }
       }
     )

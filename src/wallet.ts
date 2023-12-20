@@ -66,7 +66,7 @@ export async function signAndBroadcast(
   memo = ""
 ): Promise<DeliverTxResponse> {
   const gasEstimation = await account[0].simulate(account[1], messages, memo);
-  const multiplier = 1.2;
+  const multiplier = 1.4;
   const orchestrator = await ORCHESTRATOR;
   const fee = calculateFee(
     Math.round(gasEstimation * multiplier),
