@@ -55,17 +55,27 @@ const complete = async (
 };
 
 export async function run(address: string, idx: number) {
-  const config: {
-    adapter: {
-      contract: {
-        address: string;
-      };
-    };
-  } = await querier.wasm.queryContractSmart(address, { config: {} });
+  const config:
+    | {
+        adapter: {
+          contract: {
+            address: string;
+          };
+        };
+      }
+    | {
+        adapter: {
+          eris: string;
+        };
+      } = await querier.wasm.queryContractSmart(address, { config: {} });
+  const adapterContract =
+    "eris" in config.adapter
+      ? config.adapter.eris
+      : config.adapter.contract.address;
 
   const adapterConfig: {
     unbond_period: number;
-  } = await querier.wasm.queryContractSmart(config.adapter.contract.address, {
+  } = await querier.wasm.queryContractSmart(adapterContract, {
     config: {},
   });
 
@@ -93,7 +103,7 @@ export async function run(address: string, idx: number) {
         [
           msg.wasm.msgExecuteContract({
             sender: w[1],
-            contract: config.adapter.contract.address,
+            contract: adapterContract,
             msg: Buffer.from(
               JSON.stringify({
                 reconcile: {},
