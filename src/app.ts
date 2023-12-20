@@ -10,7 +10,12 @@ import { createGrant, getGrant } from "./workers/index.js";
 import * as unstake from "./workers/unstake.js";
 import * as usk from "./workers/usk.js";
 
-const ENABLED = [...usk.contracts, ...bow.contracts, ...ghost.contracts];
+const ENABLED = [
+  ...usk.contracts,
+  ...bow.contracts,
+  ...ghost.contracts,
+  ...unstake.contracts,
+];
 
 const run = async () => {
   await Promise.all(

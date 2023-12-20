@@ -87,11 +87,12 @@ export async function run(address: string, idx: number) {
       await querier.wasm.queryContractSmart(address, { delegates: {} });
 
     // TODO: update contract and read from there
-    const unbondingTime = adapterConfig.unbond_period;
+    const unbondingTime = adapterConfig.unbond_period * 1000;
 
     const candidates = delegates
       .filter((x) => {
         const startTime = parseInt(x[1]) / 1e6;
+
         return unbondingTime + startTime < new Date().getTime();
       })
       .sort((a, b) => parseInt(a[1]) - parseInt(b[1]));
