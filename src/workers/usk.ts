@@ -140,7 +140,6 @@ export async function run(address: string, idx: number) {
   if (!config) throw new Error(`${address} market not found`);
 
   try {
-    const w = await client(idx);
     // console.info(`[USK:${address}] running with ${w[1]}`);
 
     const price = await querier.oracle.exchangeRate(config.oracleDenom);
@@ -152,6 +151,8 @@ export async function run(address: string, idx: number) {
     );
 
     if (positions.length) {
+      const w = await client(idx);
+
       await liquidate(w, address, positions);
     }
   } catch (error: any) {

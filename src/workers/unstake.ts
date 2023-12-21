@@ -80,8 +80,7 @@ export async function run(address: string, idx: number) {
   });
 
   try {
-    const w = await client(idx);
-    console.info(`[UNSTAKE:${address}] running with ${w[1]}`);
+    console.info(`[UNSTAKE:${address}] running`);
 
     const { delegates }: { delegates: [string, string][] } =
       await querier.wasm.queryContractSmart(address, { delegates: {} });
@@ -98,6 +97,7 @@ export async function run(address: string, idx: number) {
       .sort((a, b) => parseInt(a[1]) - parseInt(b[1]));
     if (candidates.length) {
       console.info(`[UNSTAKE:${address}] reconciling`);
+      const w = await client(idx);
 
       const res = await signAndBroadcast(
         w,
@@ -116,8 +116,8 @@ export async function run(address: string, idx: number) {
         "auto"
       );
       console.debug(`[UNSTAKE:${address}] ${res.transactionHash}`);
+      await complete(w, address, candidates.map((x) => x[0]).slice(0, 10));
     }
-    await complete(w, address, candidates.map((x) => x[0]).slice(0, 10));
   } catch (error: any) {
     console.error(`[UNSTAKE:${address}] ${error.message}`);
   } finally {

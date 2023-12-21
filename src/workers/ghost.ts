@@ -107,7 +107,6 @@ export async function run(address: string, idx: number) {
   if (!config) throw new Error(`${address} market not found`);
 
   try {
-    const w = await client(idx);
     // console.info(`[GHOST:${address}] running with ${w[1]}`);
 
     const collateralPrice = await querier.oracle.exchangeRate(
@@ -140,6 +139,8 @@ export async function run(address: string, idx: number) {
     );
 
     if (positions.length) {
+      const w = await client(idx);
+
       await liquidate(w, address, positions);
     }
   } catch (error: any) {

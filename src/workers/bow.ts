@@ -29,11 +29,11 @@ const runMsg = (sender: Client, contract: string) => [
 
 export const run = async (contract: string, idx: number): Promise<void> => {
   try {
-    const w = await client(idx);
     const { orders }: { orders: { filled_amount: string }[] } =
       await querier.wasm.queryContractSmart(contract, { orders: {} });
     const shouldRun = orders.find((o) => o.filled_amount !== "0");
     if (shouldRun) {
+      const w = await client(idx);
       console.info(`[BOW:${contract}] running with ${w[1]}`);
       const res = await signAndBroadcast(w, runMsg(w, contract));
       assertIsDeliverTxSuccess(res);
