@@ -8,7 +8,7 @@ import { Client, client, signAndBroadcast } from "../wallet.js";
 type Position = {
   idx: string;
   lp_amount: string;
-  debt_shares: string;
+  debt_shares: string[];
 };
 
 const DISABLED = (process.env.DISABLED_BOW_MARGIN || "")
@@ -160,7 +160,7 @@ export async function run(address: string, idx: number) {
       await liquidate(w, address, positions);
     }
   } catch (error: any) {
-    console.error(`[GHOST:${address}] ${error.message}`);
+    console.error(`[BOW_MARGIN:${address}] ${error.message}`);
   } finally {
     await new Promise((resolve) => setTimeout(resolve, 30000));
     await run(address, idx);
