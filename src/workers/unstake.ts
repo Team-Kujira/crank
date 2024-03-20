@@ -90,10 +90,18 @@ export async function run(address: string, idx: number) {
         adapter: {
           eris: string;
         };
+      }
+    | {
+        adapter: {
+          quark: { hub: string };
+        };
       } = await querier.wasm.queryContractSmart(address, { config: {} });
+
   const adapterContract =
     "eris" in config.adapter
       ? config.adapter.eris
+      : "quark" in config.adapter
+      ? config.adapter.quark.hub
       : config.adapter.contract.address;
 
   const adapterConfig: {
@@ -118,7 +126,8 @@ export async function run(address: string, idx: number) {
         return unbondingTime + startTime < new Date().getTime();
       })
       .sort((a, b) => parseInt(a[1]) - parseInt(b[1]));
-    if (candidates.length) {
+    // Only required for Eris
+    if (candidates.length && "operator" in adapterConfig) {
       console.info(`[UNSTAKE:${address}] reconciling`);
       const w = await client(idx);
 
