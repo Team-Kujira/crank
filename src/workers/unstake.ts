@@ -11,6 +11,29 @@ export const contracts =
             "kujira1x0rx0543jpjfpuskusaca54d2t8f6v6m3eaqwpgahxtmq7kc7vls2j3hth",
           protocol: Protocol.Unstake,
         },
+        {
+          address:
+            "kujira1hmk8wy7vk0v0vpqasv6zv7hm3n2vce4m3yzkns6869j8h4u5qk2q0xndku",
+          protocol: Protocol.Unstake,
+        },
+
+        {
+          address:
+            "kujira1ql30ep2a4f3cswhrr8sjp54t56l7qz7n7jzcnux2m286k6ev7s8q6m8jnp",
+          protocol: Protocol.Unstake,
+        },
+
+        {
+          address:
+            "kujira1t2nmpazlpacazde340k5rmmx6dpa49067fdqu3pzskgh9x3lj78qelrvv4",
+          protocol: Protocol.Unstake,
+        },
+
+        {
+          address:
+            "kujira1m8jew3hlmg2s9c2wqjvv0l30xdfes5lnvrdkt58qzsvf3d3thecqn0pez3",
+          protocol: Protocol.Unstake,
+        },
       ]
     : [
         {
