@@ -166,7 +166,7 @@ export async function run(address: string, idx: number) {
         );
         console.debug(`[UNSTAKE:${address}] ${res.transactionHash}`);
       }
-      await complete(w, address, candidates.map((x) => x[0]).slice(0, 10));
+      await Promise.all(candidates.map((x) => complete(w, address, [x[0]])));
     }
   } catch (error: any) {
     console.error(`[UNSTAKE:${address}] ${error.message}`);
