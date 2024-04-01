@@ -15,7 +15,7 @@ const unbonding: Record<string, number> = {
   // ampMNTA
   kujira1m8jew3hlmg2s9c2wqjvv0l30xdfes5lnvrdkt58qzsvf3d3thecqn0pez3: 1814400,
   // qcFUZN
-  kujira1t2nmpazlpacazde340k5rmmx6dpa49067fdqu3pzskgh9x3lj78qelrvv4: 604800,
+  kujira1t2nmpazlpacazde340k5rmmx6dpa49067fdqu3pzskgh9x3lj78qelrvv4: 1814400,
 };
 
 export const contracts =
