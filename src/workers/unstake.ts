@@ -3,6 +3,21 @@ import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
+const unbonding: Record<string, number> = {
+  // ampKUJI
+  kujira1x0rx0543jpjfpuskusaca54d2t8f6v6m3eaqwpgahxtmq7kc7vls2j3hth: 1209600,
+  // qcKUJI
+  kujira1hmk8wy7vk0v0vpqasv6zv7hm3n2vce4m3yzkns6869j8h4u5qk2q0xndku: 1209600,
+  // Testnet ampKUJI
+  kujira1zp30sm7z078pyprelwq4at0za4tz7xrrwdrv0xnmxl0s4sl9dwnserwaem: 1209600,
+  // qcMNTA
+  kujira1ql30ep2a4f3cswhrr8sjp54t56l7qz7n7jzcnux2m286k6ev7s8q6m8jnp: 1814400,
+  // ampMNTA
+  kujira1m8jew3hlmg2s9c2wqjvv0l30xdfes5lnvrdkt58qzsvf3d3thecqn0pez3: 1814400,
+  // qcFUZN
+  kujira1t2nmpazlpacazde340k5rmmx6dpa49067fdqu3pzskgh9x3lj78qelrvv4: 604800,
+};
+
 export const contracts =
   NETWORK === MAINNET
     ? [
@@ -104,11 +119,12 @@ export async function run(address: string, idx: number) {
       ? config.adapter.quark.hub
       : config.adapter.contract.address;
 
-  const adapterConfig: {
-    unbond_period: number;
-  } = await querier.wasm.queryContractSmart(adapterContract, {
-    config: {},
-  });
+  const adapterConfig: any = await querier.wasm.queryContractSmart(
+    adapterContract,
+    {
+      config: {},
+    }
+  );
 
   try {
     console.info(`[UNSTAKE:${address}] running`);
@@ -116,8 +132,7 @@ export async function run(address: string, idx: number) {
     const { delegates }: { delegates: [string, string][] } =
       await querier.wasm.queryContractSmart(address, { delegates: {} });
 
-    // TODO: update contract and read from there
-    const unbondingTime = adapterConfig.unbond_period * 1000;
+    const unbondingTime = unbonding[address] * 1000;
 
     const candidates = delegates
       .filter((x) => {
@@ -126,28 +141,31 @@ export async function run(address: string, idx: number) {
         return unbondingTime + startTime < new Date().getTime();
       })
       .sort((a, b) => parseInt(a[1]) - parseInt(b[1]));
-    // Only required for Eris
-    if (candidates.length && "operator" in adapterConfig) {
-      console.info(`[UNSTAKE:${address}] reconciling`);
-      const w = await client(idx);
 
-      const res = await signAndBroadcast(
-        w,
-        [
-          msg.wasm.msgExecuteContract({
-            sender: w[1],
-            contract: adapterContract,
-            msg: Buffer.from(
-              JSON.stringify({
-                reconcile: {},
-              })
-            ),
-            funds: [],
-          }),
-        ],
-        "auto"
-      );
-      console.debug(`[UNSTAKE:${address}] ${res.transactionHash}`);
+    if (candidates.length) {
+      const w = await client(idx);
+      // Only required for Eris
+      if ("operator" in adapterConfig) {
+        console.info(`[UNSTAKE:${address}] reconciling`);
+
+        const res = await signAndBroadcast(
+          w,
+          [
+            msg.wasm.msgExecuteContract({
+              sender: w[1],
+              contract: adapterContract,
+              msg: Buffer.from(
+                JSON.stringify({
+                  reconcile: {},
+                })
+              ),
+              funds: [],
+            }),
+          ],
+          "auto"
+        );
+        console.debug(`[UNSTAKE:${address}] ${res.transactionHash}`);
+      }
       await complete(w, address, candidates.map((x) => x[0]).slice(0, 10));
     }
   } catch (error: any) {
