@@ -129,7 +129,12 @@ const getpositions = async (
     console.error(e);
   }
 
-  return candidates.reverse();
+  return (
+    candidates
+      // Temp fix for rounding errors during liquidation
+      .filter((a) => parseInt(a.deposit_amount) > 100)
+      .sort((a, b) => parseInt(b.deposit_amount) - parseInt(a.deposit_amount))
+  );
 };
 
 export async function run(address: string, idx: number) {

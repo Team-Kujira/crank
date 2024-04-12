@@ -81,6 +81,7 @@ const getpositions = async (
         const collateralAmount = BigNumber.from(p.collateral_amount).mul(
           BigNumber.from(10).pow(config.vault.decimals)
         );
+        if (collateralAmount.lt(100)) return;
         const debtShares = BigNumber.from(p.debt_shares);
         const debtAmount = mulDec(
           debtShares.mul(BigNumber.from(10).pow(config.collateralDecimals)),
