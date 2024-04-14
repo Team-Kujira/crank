@@ -23,18 +23,18 @@ export const contracts = [
 const liquidate = async (
   client: Client,
   contract: string,
-  addresses: string[]
+  positions: Position[]
 ) => {
-  if (!addresses.length) return;
+  if (!positions.length) return;
 
-  const msgs = addresses.map((address) =>
+  const msgs = positions.map((p) =>
     msg.wasm.msgExecuteContract({
       sender: client[1],
       contract,
       msg: Buffer.from(
         JSON.stringify({
           liquidate: {
-            position_holder: address,
+            position_holder: p.holder,
           },
         })
       ),
@@ -44,15 +44,15 @@ const liquidate = async (
 
   try {
     console.debug(`[GHOST:${contract}] Attempting Liquidation`);
-    console.debug(`[GHOST:${contract}] ${addresses}`);
+    console.debug(`[GHOST:${contract}] ${positions.map((x) => x.holder)}`);
 
     const res = await signAndBroadcast(client, msgs, "auto");
     console.debug(`[GHOST:${contract}] ${res.transactionHash}`);
   } catch (e: any) {
     console.error(`[GHOST:${contract}] ${e}`);
 
-    addresses.pop();
-    await liquidate(client, contract, addresses);
+    positions.pop();
+    await liquidate(client, contract, positions);
   }
 };
 
@@ -62,8 +62,8 @@ const getpositions = async (
   collateralPrice: number,
   debtPrice: number,
   redemptionRate: number
-): Promise<string[]> => {
-  let candidates: string[] = [];
+): Promise<Position[]> => {
+  let candidates: Position[] = [];
 
   try {
     const models = await getAllContractState(querier, address);
@@ -92,7 +92,7 @@ const getpositions = async (
         const ratio = divToNumber(debtValue, collateralValue);
 
         if (ratio >= config.maxLtv && collateralValue.gt(debtValue)) {
-          candidates.push(p.holder);
+          candidates.push(p);
         }
       }
     });
@@ -100,7 +100,11 @@ const getpositions = async (
     console.error(e);
   }
 
-  return candidates;
+  return candidates // Temp fix for rounding errors during liquidation
+    .filter((a) => parseInt(a.collateral_amount) > 100)
+    .sort(
+      (a, b) => parseInt(b.collateral_amount) - parseInt(a.collateral_amount)
+    );
 };
 
 export async function run(address: string, idx: number) {
