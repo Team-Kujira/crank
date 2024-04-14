@@ -9,8 +9,8 @@ import Long from "long";
 import { RPC_ENDPOINT } from "./config.js";
 
 const rpcClient = new HttpBatchClient(RPC_ENDPOINT, { dispatchInterval: 2000 });
-const client = await Tendermint37Client.create(rpcClient);
-export const querier = kujiraQueryClient({ client });
+export const tmClient = await Tendermint37Client.create(rpcClient);
+export const querier = kujiraQueryClient({ client: tmClient });
 
 export const getAllContractState = async (
   client: KujiraQueryClient,

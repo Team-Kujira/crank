@@ -6,11 +6,12 @@ import { querier } from "../query.js";
 import { Client, client, ORCHESTRATOR } from "../wallet.js";
 
 export const getGrant = async (
-  idx: number
+  client: Client
 ): Promise<QueryAllowanceResponse | null> => {
-  const w = await client(idx);
   const orchestrator = await ORCHESTRATOR;
-  return querier.feegrant.allowance(orchestrator[1], w[1]).catch(() => null);
+  return querier.feegrant
+    .allowance(orchestrator[1], client[1])
+    .catch(() => null);
 };
 
 export const createGrant = async (idx: number): Promise<void> => {

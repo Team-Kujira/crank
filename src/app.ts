@@ -3,7 +3,7 @@ import "./appsignal.js";
 import { accountFromAny } from "@cosmjs/stargate";
 import { Protocol } from "./config.js";
 import { querier } from "./query.js";
-import { ORCHESTRATOR } from "./wallet.js";
+import { ORCHESTRATOR, client } from "./wallet.js";
 import * as bow from "./workers/bow.js";
 import * as ghost from "./workers/ghost.js";
 import { createGrant, getGrant } from "./workers/index.js";
@@ -51,7 +51,11 @@ const run = async () => {
     process.exit();
   }
 
-  const grants = await Promise.all(ENABLED.map((x, idx) => getGrant(idx + 1)));
+  console.log("x");
+
+  const clients = await Promise.all(ENABLED.map((x, idx) => client(idx + 1)));
+
+  const grants = await Promise.all(clients.map(getGrant));
 
   await grants.reduce(async (agg, grant, idx: number) => {
     if (grant) return agg;

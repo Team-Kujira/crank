@@ -1,6 +1,5 @@
 import { StdFee } from "@cosmjs/amino";
 import { Slip10RawIndex } from "@cosmjs/crypto";
-
 import { Uint53 } from "@cosmjs/math";
 import {
   coins,
@@ -9,7 +8,8 @@ import {
 } from "@cosmjs/proto-signing";
 import { DeliverTxResponse, SigningStargateClient } from "@cosmjs/stargate";
 import { registry } from "kujira.js";
-import { GAS_PRICE, PREFIX, RPC_ENDPOINT } from "./config.js";
+import { GAS_PRICE, PREFIX } from "./config.js";
+import { tmClient } from "./query.js";
 
 export const wallet = (account: number) => {
   if (!process.env.MNEMONIC) throw new Error("MNEMONIC not set");
@@ -34,11 +34,10 @@ export const client = async (account: number): Promise<Client> => {
   const signer = await wallet(account);
 
   const [acc] = await signer.getAccounts();
-  const c = await SigningStargateClient.connectWithSigner(
-    RPC_ENDPOINT,
-    signer,
-    { registry, gasPrice: GAS_PRICE }
-  );
+  const c = await SigningStargateClient.createWithSigner(tmClient, signer, {
+    registry,
+    gasPrice: GAS_PRICE,
+  });
 
   return [c, acc.address];
 };
