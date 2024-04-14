@@ -21,13 +21,12 @@ export const contracts = Object.values(bow.POOLS[NETWORK]).reduce(
       ? a
       : [
           {
-            margin: p.margin.address,
-            pool: p.address,
+            address: p.margin.address,
             protocol: Protocol.BowMargin,
           },
           ...a,
         ],
-  [] as { margin: string; pool: string; protocol: Protocol }[]
+  [] as { address: string; protocol: Protocol }[]
 );
 
 export const pools = [...Object.values(bow.POOLS[NETWORK])];
@@ -53,12 +52,12 @@ const liquidate = async (
     })
   );
   try {
-    console.debug(`[BOW_MARGIN:${contract}] Attempting Liquidation`);
-    console.debug(`[BOW_MARGIN:${contract}] ${addresses}`);
+    console.log(`[BOWMARGIN:${contract}] Attempting Liquidation`);
+    console.log(`[BOWMARGIN:${contract}] ${addresses}`);
     const res = await signAndBroadcast(client, msgs, "auto");
-    console.debug(`[BOW_MARGIN:${contract}] ${res.transactionHash}`);
+    console.log(`[BOWMARGIN:${contract}] ${res.transactionHash}`);
   } catch (e: any) {
-    console.error(`[BOW_MARGIN:${contract}] ${e}`);
+    console.error(`[BOWMARGIN:${contract}] ${e}`);
     addresses.pop();
     await liquidate(client, contract, addresses);
   }
@@ -79,7 +78,7 @@ const getpositions = async (
       const v = JSON.parse(Buffer.from(m.value).toString());
       if (typeof v === "object" && "lp_amount" in v && "debt_shares" in v) {
         const p: Position = v;
-        const lpValue = BigNumber.from(p.lp_amount).mul(lpPrice);
+        const lpValue = mulDec(BigNumber.from(p.lp_amount), lpPrice);
         const xDebtShares = BigNumber.from(p.debt_shares[0]);
         const xDebtAmount = mulDec(
           xDebtShares.mul(BigNumber.from(10).pow(margin.denoms[0].decimals)),
@@ -93,8 +92,9 @@ const getpositions = async (
         const debtValue = mulDec(xDebtAmount, xPrice).add(
           mulDec(yDebtAmount, yPrice)
         );
-        const ltv = debtValue.div(lpValue);
-        if (ltv >= margin.maxLtv && lpValue.gt(debtValue)) {
+        const ltv = mulDec(BigNumber.from(10).pow(18), divToNumber(debtValue, lpValue));
+        // console.debug(`[BOWMARGIN:${margin.address}] lpValue: ${lpValue} debtValue: ${debtValue} ltv: ${ltv} maxLtv: ${margin.maxLtv}`)
+        if (ltv.gte(margin.maxLtv) && lpValue.gt(debtValue)) {
           candidates.push(p.idx);
         }
       }
@@ -110,7 +110,7 @@ export async function run(address: string, idx: number) {
   if (!pool) throw new Error(`${address} pool not found`);
   const margin = pool.margin!;
   try {
-    const lpDenom = "factory/" + margin.address + "/ulp";
+    const lpDenom = "factory/" + pool.address + "/ulp";
     const lpSupply = await querier.bank.supplyOf(lpDenom);
     const xPriceRes = await querier.oracle.exchangeRate(
       margin.denoms[0].oracle
@@ -124,19 +124,22 @@ export async function run(address: string, idx: number) {
     const yPrice = decodeCosmosSdkDecFromProto(
       yPriceRes.exchange_rate
     ).toFloatApproximation();
-    const poolAmounts = await querier.wasm.queryContractSmart(margin.address, {
+    const poolAmounts = await querier.wasm.queryContractSmart(pool.address, {
       pool: {},
     });
-    const xAmount = BigNumber.from(poolAmounts.balances[0].amount).mul(
+    // console.debug(`[BOWMARGIN:${address}] xPrice: ${xPrice} yPrice: ${yPrice} poolAmounts: ${JSON.stringify(poolAmounts)} lpSupply: ${JSON.stringify(lpSupply)}`)
+    const xAmount = BigNumber.from(poolAmounts.balances[0]).mul(
       BigNumber.from(10).pow(margin.denoms[0].decimals)
     );
-    const yAmount = BigNumber.from(poolAmounts.balances[1].amount).mul(
+    const yAmount = BigNumber.from(poolAmounts.balances[1]).mul(
       BigNumber.from(10).pow(margin.denoms[1].decimals)
     );
+    const lpTotalPrice = mulDec(xAmount, xPrice).add(mulDec(yAmount, yPrice))
     const lpPrice = divToNumber(
-      xAmount.mul(xPrice).add(yAmount.mul(yPrice)),
+      mulDec(xAmount, xPrice).add(mulDec(yAmount, yPrice)),
       BigNumber.from(lpSupply.amount)
     );
+    // console.debug(`[BOWMARGIN:${address}] xAmount: ${xAmount} yAmount: ${yAmount} lpPrice: ${lpPrice} lpTotalPrice: ${lpTotalPrice} lpAmount: ${lpSupply.amount}`)
     const xDebtStatus = await querier.wasm.queryContractSmart(
       margin.vaults[0]!,
       { status: {} }
@@ -147,6 +150,7 @@ export async function run(address: string, idx: number) {
       { status: {} }
     );
     const yDebtRatio = parseFloat(yDebtStatus.debt_share_ratio);
+    // console.debug(`[BOWMARGIN:${address}] xDebtRatio: ${xDebtRatio} yDebtRatio: ${yDebtRatio}`)
     const positions = await getpositions(
       margin,
       lpPrice,
@@ -160,7 +164,7 @@ export async function run(address: string, idx: number) {
       await liquidate(w, address, positions);
     }
   } catch (error: any) {
-    console.error(`[BOW_MARGIN:${address}] ${error.message}`);
+    console.error(`[BOWMARGIN:${address}] ${error.message}`);
   } finally {
     await new Promise((resolve) => setTimeout(resolve, 30000));
     await run(address, idx);
