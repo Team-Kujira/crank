@@ -11,13 +11,63 @@ import { createGrant, getGrant } from "./workers/index.js";
 import * as unstake from "./workers/unstake.js";
 import * as usk from "./workers/usk.js";
 
-const ENABLED = [
-  // ...usk.contracts,
-  // ...bow.contracts,
-  ...bowmargin.contracts,
-  // ...ghost.contracts,
-  // ...unstake.contracts,
-];
+const EXPORT = process.env.EXPORT;
+
+const get_contracts = () => {
+  const namesList =
+    process.env.ENABLED_WORKERS || Object.values(Protocol).join(",");
+  const names = namesList.split(",");
+  if (names.length < 1) {
+    console.error("No workers enabled!");
+    process.exit(1);
+  }
+  if (EXPORT && names.length > 1) {
+    console.error(
+      "Cannot export multiple workers! Choose one with ENABLED_WORKERS"
+    );
+    process.exit(1);
+  }
+  let contracts: { address: string; protocol: Protocol }[] = [];
+  names.forEach((name) => {
+    switch (name) {
+      case Protocol.BOW:
+        contracts.push(...bow.contracts);
+        break;
+      case Protocol.BowMargin:
+        contracts.push(...bowmargin.contracts);
+        break;
+      case Protocol.GHOST:
+        contracts.push(...ghost.contracts);
+        break;
+      case Protocol.Unstake:
+        contracts.push(...unstake.contracts);
+        break;
+      case Protocol.USK:
+        contracts.push(...usk.contracts);
+        break;
+      default:
+        console.error(`Worker not recognized: ${name}`);
+        process.exit(1);
+    }
+  });
+  if (EXPORT) {
+    switch (names[0]) {
+      case Protocol.BowMargin:
+        console.log("address,index,debt_amount,debt_value,ltv,max_ltv");
+        break;
+      default:
+        console.error(`Worker not supported for export: ${names[0]}`);
+        process.exit(1);
+    }
+  } else {
+    console.log(
+      `[STARTUP] Enabled workers: ${names} (${contracts.length} contracts)`
+    );
+  }
+  return contracts;
+};
+
+const ENABLED = get_contracts();
 
 const run = async () => {
   await Promise.all(
@@ -41,6 +91,11 @@ const run = async () => {
 };
 
 (async function () {
+  if (EXPORT) {
+    await run();
+    process.exit();
+  }
+
   const orchestrator = await ORCHESTRATOR;
 
   try {

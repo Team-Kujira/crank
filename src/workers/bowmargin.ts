@@ -1,6 +1,6 @@
 import { decodeCosmosSdkDecFromProto } from "@cosmjs/stargate";
 import { BigNumber } from "ethers";
-import { divToNumber, bow, ghost, msg, mulDec } from "kujira.js";
+import { divToNumber, bow, msg, mulDec } from "kujira.js";
 import { NETWORK, Protocol } from "../config.js";
 import { getAllContractState, querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
@@ -14,6 +14,8 @@ type Position = {
 const DISABLED = (process.env.DISABLED_BOW_MARGIN || "")
   .split(",")
   .map((x) => x.trim());
+
+const EXPORT = process.env.EXPORT;
 
 export const contracts = Object.values(bow.POOLS[NETWORK]).reduce(
   (a, p) =>
@@ -78,7 +80,8 @@ const getpositions = async (
       const v = JSON.parse(Buffer.from(m.value).toString());
       if (typeof v === "object" && "lp_amount" in v && "debt_shares" in v) {
         const p: Position = v;
-        const lpValue = mulDec(BigNumber.from(p.lp_amount), lpPrice);
+        const lpAmount = BigNumber.from(p.lp_amount);
+        const lpValue = mulDec(lpAmount, lpPrice);
         const xDebtShares = BigNumber.from(p.debt_shares[0]);
         const xDebtAmount = mulDec(
           xDebtShares.mul(BigNumber.from(10).pow(margin.denoms[0].decimals)),
@@ -92,10 +95,21 @@ const getpositions = async (
         const debtValue = mulDec(xDebtAmount, xPrice).add(
           mulDec(yDebtAmount, yPrice)
         );
-        const ltv = mulDec(BigNumber.from(10).pow(18), divToNumber(debtValue, lpValue));
-        // console.debug(`[BOWMARGIN:${margin.address}] lpValue: ${lpValue} debtValue: ${debtValue} ltv: ${ltv} maxLtv: ${margin.maxLtv}`)
-        if (ltv.gte(margin.maxLtv) && lpValue.gt(debtValue)) {
+        const ltv = divToNumber(debtValue, lpValue);
+        const maxLtv = divToNumber(margin.maxLtv, BigNumber.from(10).pow(18))
+        const debtAmount = mulDec(lpAmount, ltv);
+        if (EXPORT == "positions") {
+          console.log(
+            `${margin.address},${p.idx},${debtAmount},${debtValue},${ltv},${maxLtv}`
+          );
+        }
+        if (ltv >= maxLtv && lpValue.gt(debtValue)) {
           candidates.push(p.idx);
+          if (EXPORT == "candidates") {
+            console.log(
+              `${margin.address},${p.idx},${debtAmount},${debtValue},${ltv},${maxLtv}`
+            );
+          }
         }
       }
     });
@@ -134,7 +148,6 @@ export async function run(address: string, idx: number) {
     const yAmount = BigNumber.from(poolAmounts.balances[1]).mul(
       BigNumber.from(10).pow(margin.denoms[1].decimals)
     );
-    const lpTotalPrice = mulDec(xAmount, xPrice).add(mulDec(yAmount, yPrice))
     const lpPrice = divToNumber(
       mulDec(xAmount, xPrice).add(mulDec(yAmount, yPrice)),
       BigNumber.from(lpSupply.amount)
@@ -159,14 +172,16 @@ export async function run(address: string, idx: number) {
       yPrice,
       yDebtRatio
     );
-    if (positions.length) {
+    if (positions.length && !EXPORT) {
       const w = await client(idx);
       await liquidate(w, address, positions);
     }
   } catch (error: any) {
     console.error(`[BOWMARGIN:${address}] ${error.message}`);
   } finally {
-    await new Promise((resolve) => setTimeout(resolve, 30000));
-    await run(address, idx);
+    if (!EXPORT) {
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+      await run(address, idx);
+    }
   }
 }

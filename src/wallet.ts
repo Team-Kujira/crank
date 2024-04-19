@@ -12,6 +12,7 @@ import { GAS_PRICE, PREFIX } from "./config.js";
 import { tmClient } from "./query.js";
 
 export const wallet = (account: number) => {
+  if (process.env.EXPORT) return DirectSecp256k1HdWallet.generate();
   if (!process.env.MNEMONIC) throw new Error("MNEMONIC not set");
 
   return DirectSecp256k1HdWallet.fromMnemonic(process.env.MNEMONIC, {
