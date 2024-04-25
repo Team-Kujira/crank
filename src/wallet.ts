@@ -7,7 +7,7 @@ import {
   EncodeObject,
 } from "@cosmjs/proto-signing";
 import { DeliverTxResponse, SigningStargateClient } from "@cosmjs/stargate";
-import { registry } from "kujira.js";
+import { registry } from "kujira.js/lib/cjs/registry.js";
 import { GAS_PRICE, PREFIX } from "./config.js";
 import { tmClient } from "./query.js";
 

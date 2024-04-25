@@ -1,4 +1,5 @@
-import { MAINNET, msg } from "kujira.js";
+import { msg } from "kujira.js/lib/cjs/msg.js";
+import { MAINNET } from "kujira.js/lib/cjs/network.js";
 import { NETWORK, Protocol } from "../config.js";
 import { querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";

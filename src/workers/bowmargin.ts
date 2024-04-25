@@ -1,6 +1,8 @@
 import { decodeCosmosSdkDecFromProto } from "@cosmjs/stargate";
 import { BigNumber } from "ethers";
-import { divToNumber, bow, msg, mulDec } from "kujira.js";
+import { divToNumber, mulDec } from "kujira.js/lib/cjs/bignumber.js";
+import * as bow from "kujira.js/lib/cjs/bow.js";
+import { msg } from "kujira.js/lib/cjs/msg.js";
 import { NETWORK, Protocol } from "../config.js";
 import { getAllContractState, querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
@@ -96,7 +98,7 @@ const getpositions = async (
           mulDec(yDebtAmount, yPrice)
         );
         const ltv = divToNumber(debtValue, lpValue);
-        const maxLtv = divToNumber(margin.maxLtv, BigNumber.from(10).pow(18))
+        const maxLtv = divToNumber(margin.maxLtv, BigNumber.from(10).pow(18));
         const debtAmount = mulDec(lpAmount, ltv);
         if (EXPORT == "positions") {
           console.log(

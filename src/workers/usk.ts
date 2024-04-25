@@ -1,5 +1,7 @@
 import { decodeCosmosSdkDecFromProto } from "@cosmjs/stargate";
-import { fin, msg, usk } from "kujira.js";
+import * as fin from "kujira.js/lib/cjs/fin.js";
+import { msg } from "kujira.js/lib/cjs/msg.js";
+import * as usk from "kujira.js/lib/cjs/usk.js";
 import { NETWORK, Protocol } from "../config.js";
 import { getAllContractState, querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";

@@ -1,7 +1,7 @@
 import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
 import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js";
 import { QueryAllowanceResponse } from "cosmjs-types/cosmos/feegrant/v1beta1/query.js";
-import { msg } from "kujira.js";
+import { msg } from "kujira.js/lib/cjs/msg.js";
 import { querier } from "../query.js";
 import { Client, client, ORCHESTRATOR } from "../wallet.js";
 

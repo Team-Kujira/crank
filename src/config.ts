@@ -1,5 +1,5 @@
 import { GasPrice } from "@cosmjs/stargate";
-import { MAINNET, RPCS, TESTNET } from "kujira.js";
+import { MAINNET, RPCS, TESTNET } from "kujira.js/lib/cjs/network.js";
 
 export const NETWORK = process.env.NETWORK === "mainnet" ? MAINNET : TESTNET;
 

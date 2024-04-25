@@ -1,6 +1,8 @@
 import { decodeCosmosSdkDecFromProto } from "@cosmjs/stargate";
 import { BigNumber } from "ethers";
-import { divToNumber, ghost, msg, mulDec } from "kujira.js";
+import { divToNumber, mulDec } from "kujira.js/lib/cjs/bignumber.js";
+import * as ghost from "kujira.js/lib/cjs/ghost.js";
+import { msg } from "kujira.js/lib/cjs/msg.js";
 import { NETWORK, Protocol } from "../config.js";
 import { getAllContractState, querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
