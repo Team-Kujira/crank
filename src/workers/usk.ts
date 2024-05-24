@@ -6,8 +6,6 @@ import { NETWORK, Protocol } from "../config.js";
 import { getAllContractState, querier } from "../query.js";
 import { Client, client, signAndBroadcast } from "../wallet.js";
 
-const MARKET_MAX_LTV = 0.6;
-
 type Position = {
   owner: string;
   deposit_amount: string;
@@ -112,7 +110,7 @@ const getpositions = async (
 
         const factor = pair ? 10 ** pair.decimalDelta : 1;
         const liqiuidation_price =
-          debt_amount / (deposit_amount * MARKET_MAX_LTV);
+          debt_amount / (deposit_amount * config.maxRatio);
 
         const solvency_price = debt_amount / deposit_amount;
 
@@ -121,7 +119,7 @@ const getpositions = async (
           // Inbsolvent positions don't liquidate
           solvency_price * factor < price &&
           // Ignore small positions. rounding issues
-          deposit_amount > 10
+          debt_amount > 1000
         ) {
           candidates.push(p);
         }

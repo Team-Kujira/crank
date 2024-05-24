@@ -107,8 +107,6 @@ const run = async () => {
     process.exit();
   }
 
-  console.log("x");
-
   const clients = await Promise.all(ENABLED.map((x, idx) => client(idx + 1)));
 
   const grants = await Promise.all(clients.map(getGrant));
