@@ -24,7 +24,7 @@ export const contracts = Object.values(bow.POOLS[NETWORK]).reduce(
     DISABLED.includes(p.address)
       ? a
       : [{ address: p.address, protocol: Protocol.BOW }, ...a],
-  [] as { address: "kujira1wj95sv6rny4ec2p6awef98jxk856l2nnrnusyu7nfldjhygpncgqluvnyy"; protocol: Protocol }[]
+  [] as { address: string; protocol: Protocol }[]
 );
 
 const runMsg = (sender: Client, contract: string) => [
