@@ -9,6 +9,8 @@ const unbonding: Record<string, number> = {
   kujira1x0rx0543jpjfpuskusaca54d2t8f6v6m3eaqwpgahxtmq7kc7vls2j3hth: 1209600,
   // qcKUJI
   kujira1hmk8wy7vk0v0vpqasv6zv7hm3n2vce4m3yzkns6869j8h4u5qk2q0xndku: 1209600,
+  // boneKUJI
+  kujira1f49t5dn6xyfrxafxjujrdm0ents85536mdkum4pmlymycwnn9y0q5v86za: 1209600,
   // Testnet ampKUJI
   kujira1zp30sm7z078pyprelwq4at0za4tz7xrrwdrv0xnmxl0s4sl9dwnserwaem: 1209600,
   // qcMNTA
@@ -30,6 +32,11 @@ export const contracts =
         {
           address:
             "kujira1hmk8wy7vk0v0vpqasv6zv7hm3n2vce4m3yzkns6869j8h4u5qk2q0xndku",
+          protocol: Protocol.Unstake,
+        },
+        {
+          address:
+            "kujira1f49t5dn6xyfrxafxjujrdm0ents85536mdkum4pmlymycwnn9y0q5v86za",
           protocol: Protocol.Unstake,
         },
 
@@ -111,14 +118,26 @@ export async function run(address: string, idx: number) {
         adapter: {
           quark: { hub: string };
         };
-      } = await querier.wasm.queryContractSmart(address, { config: {} });
+      }
+    | {
+        adapter: {
+          gravedigger: string;
+        };
+      }
+       = await querier.wasm.queryContractSmart(address, { config: {} });
 
-  const adapterContract =
-    "eris" in config.adapter
-      ? config.adapter.eris
-      : "quark" in config.adapter
-      ? config.adapter.quark.hub
-      : config.adapter.contract.address;
+  let adapterContract;
+  if ("eris" in config.adapter) {
+    adapterContract = config.adapter.eris;
+  }
+  else if ("quark" in config.adapter) {
+    adapterContract = config.adapter.quark.hub;
+  }
+  else if ("gravedigger" in config.adapter) {
+    adapterContract = config.adapter.gravedigger;
+  } else {
+    adapterContract = config.adapter.contract.address;
+  }
 
   const adapterConfig: any = await querier.wasm.queryContractSmart(
     adapterContract,
