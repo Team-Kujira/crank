@@ -34,6 +34,11 @@ export const contracts =
             "kujira1hmk8wy7vk0v0vpqasv6zv7hm3n2vce4m3yzkns6869j8h4u5qk2q0xndku",
           protocol: Protocol.Unstake,
         },
+        {
+          address:
+            "kujira1f49t5dn6xyfrxafxjujrdm0ents85536mdkum4pmlymycwnn9y0q5v86za",
+          protocol: Protocol.Unstake,
+        },
 
         {
           address:
