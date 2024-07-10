@@ -16,7 +16,7 @@ const CRANK_THRESHOLD = 100000;
 const DISABLED = [
   ...(process.env.DISABLED_BOW || "").split(",").map((x) => x.trim()),
   // FURY Legacy
-  "kujira1v8lkqws3gd6npr0rdk9ch54amh9guas86r4u62jq27hee88lryfsxwrvlk",
+  "kujira1hgq0fgqnv0dk2r474pfax3va86wfh9ffgdhx6q6jls00g7nv8vmsx2jnjt",
 ];
 
 export const contracts = Object.values(bow.POOLS[NETWORK]).reduce(
