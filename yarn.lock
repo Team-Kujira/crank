@@ -3710,7 +3710,7 @@ __metadata:
     "@types/node": ^18.11.9
     cosmjs-types: ^0.9.0
     ethers: ^5.5.4
-    kujira.js: ^1.0.64
+    kujira.js: ^1.0.67
     protobufjs: ^7.1.2
     text-encoding: ^0.7.0
     ts-node: ^10.9.1
@@ -3718,9 +3718,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"kujira.js@npm:^1.0.64":
-  version: 1.0.64
-  resolution: "kujira.js@npm:1.0.64"
+"kujira.js@npm:^1.0.67":
+  version: 1.0.67
+  resolution: "kujira.js@npm:1.0.67"
   dependencies:
     "@cosmjs/cosmwasm-stargate": ^0.32.3
     "@cosmjs/proto-signing": ^0.32.3
@@ -3739,7 +3739,7 @@ __metadata:
     text-encoding: ^0.7.0
     uuid: ^9.0.1
     yarn: ^1.22.19
-  checksum: dc9c48711d1f662ddccf00ec7d3d3f7905d047668c58ae9fee172102b604ff3180fe9e16fd7be9404053b186fcb94ebd5715774b875967b14ae6454cc9da9fc9
+  checksum: 9e737b23eabf06c2b3947c516ca834e87f8c9e862c2c564a259bcdd05ee7861d1bed53bfa13b798f3188f2b1ea006e6fb2936892f27a9462e707a51c0d729b82
   languageName: node
   linkType: hard
 
@@ -5163,11 +5163,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 
