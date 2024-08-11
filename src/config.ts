@@ -16,6 +16,8 @@ const RPC_DEFAULT =
 
 export const PREFIX = process.env.PREFIX || "kujira";
 export const RPC_ENDPOINT = process.env.RPC_ENDPOINT || RPC_DEFAULT;
+export const RPC_QUERY_ENDPOINT =
+  process.env.RPC_QUERY_ENDPOINT || RPC_ENDPOINT;
 export const GAS_PRICE = GasPrice.fromString(
   process.env.GAS_PRICE || "0.0034ukuji"
 );

@@ -8,11 +8,14 @@ import {
   KujiraQueryClient,
   kujiraQueryClient,
 } from "kujira.js/lib/cjs/queryClient.js";
-import { RPC_ENDPOINT } from "./config.js";
+import { RPC_ENDPOINT, RPC_QUERY_ENDPOINT } from "./config.js";
 
 const rpcClient = new HttpBatchClient(RPC_ENDPOINT, { dispatchInterval: 2000 });
 export const tmClient = await Tendermint37Client.create(rpcClient);
-export const querier = kujiraQueryClient({ client: tmClient });
+const tmQueryClient = await Tendermint37Client.create(
+  new HttpBatchClient(RPC_QUERY_ENDPOINT, { dispatchInterval: 2000 })
+);
+export const querier = kujiraQueryClient({ client: tmQueryClient });
 
 export const getAllContractState = async (
   client: KujiraQueryClient,
