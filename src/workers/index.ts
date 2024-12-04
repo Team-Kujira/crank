@@ -1,4 +1,3 @@
-import { assertIsDeliverTxSuccess } from "@cosmjs/stargate";
 import { BasicAllowance } from "cosmjs-types/cosmos/feegrant/v1beta1/feegrant.js";
 import { QueryAllowanceResponse } from "cosmjs-types/cosmos/feegrant/v1beta1/query.js";
 import { msg } from "kujira.js/lib/cjs/msg.js";
@@ -24,7 +23,8 @@ export const createGrant = async (idx: number): Promise<void> => {
     grantMsg(orchestrator, w),
     "auto"
   );
-  assertIsDeliverTxSuccess(res);
+  if (res.code) console.error(`[SETUP:${idx}] error ${res.rawLog}`);
+
   console.info(`[SETUP:${idx}] done ${res.transactionHash}`);
 };
 
